@@ -1,7 +1,5 @@
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
-from credentials import SPOTIPY_CLIENT_ID
-from credentials import SPOTIPY_CLIENT_SECRET
 from datetime import date, datetime, timedelta
 import mysql.connector
 
@@ -9,7 +7,7 @@ auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51
 sp = spotipy.Spotify(auth_manager=auth_manager)
 
 cnx = mysql.connector.connect(user='root', password='1234',
-                              host='104.197.65.16',
+                              host='35.222.92.143',
                               database='main')
 cursor = cnx.cursor()
 
@@ -19,24 +17,24 @@ Lines = file1.readlines()
 for i in range(1, len(Lines)):
     track_id = Lines[i].strip()
     urn = 'spotify:track:{}'.format(track_id)
-
     track = sp.track(urn)
+    for artist in track['artists']:
 
-    add_album = ("INSERT IGNORE INTO Albums "
-                 "(album_id, name, release_date) "
-                 "VALUES (%(album_id)s, %(name)s, %(release_date)s) ")
+        add_album = ("INSERT IGNORE INTO SongsArtistsAlbums "
+                 "(song_id, artist_id, album_id) "
+                 "VALUES (%(song_id)s, %(artist_id)s, %(album_id)s) ")
 
-    data_album = {
-        'album_id': track['album']['id'],
-        'name': track['album']['name'],
-        'release_date': track['album']['release_date']
-    }
+        data_album = {
+            'song_id': track_id,
+            'artist_id': artist['id'],
+            'album_id': track['album']['id'],
+        }
 
-    # Insert new employee
-    cursor.execute(add_album, data_album)
+        # Insert new employee
+        cursor.execute(add_album, data_album)
 
-    # Make sure data is committed to the database
-    cnx.commit()
+        # Make sure data is committed to the database
+        cnx.commit()
 
 file1.close()
 
