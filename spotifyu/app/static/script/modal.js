@@ -11,12 +11,13 @@ $(document).ready(function () {
             modal.find('.modal-title').text(taskID)
             $('#task-form-display').removeAttr('taskID')
         } else {
-            modal.find('.modal-title').text('Make a nickname for this song:')
+            modal.find('.modal-title').text('Edit Artists Name')
             $('#task-form-display').attr('taskID', taskID)
         }
 
         if (content) {
-            modal.find('.form-control').val(content);
+            modal.find('#artist_name').val(content);
+            modal.find('#artist_id').val(taskID);
         } else {
             modal.find('.form-control').val('');
         }
@@ -31,7 +32,28 @@ $(document).ready(function () {
             url: tID ? '/edit/' + tID : '/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'description': $('#task-modal').find('.form-control').val() //puts the song name into data['description']
+                'id': $('#artist_id').val(),
+                'name': $('#artist_name').val() //puts the song name into data['description']
+            }),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+    });
+
+    $('#submit-search').click(function () {
+        // const tID = $('#task-form-display').attr('taskID');
+        // console.log($('#task-modal').find('.form-control').val()) //prints out song name from .form-control
+        $.ajax({
+            type: 'POST',
+            url: '/search',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                'name': $('#search').val() //puts the song name into data['description']
             }),
             success: function (res) {
                 console.log(res.response)

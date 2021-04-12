@@ -25,8 +25,8 @@ def update(task_id):
         if "status" in data:
             db_helper.update_status_entry(task_id, data["status"])
             result = {'success': True, 'response': 'Status Updated'}
-        elif "description" in data:
-            db_helper.update_task_entry(task_id, data["description"])
+        elif "name" in data:
+            db_helper.update_task_entry(task_id, data["name"])
             result = {'success': True, 'response': 'Task Updated'}
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
@@ -40,7 +40,7 @@ def update(task_id):
 def create():
     """ recieves post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task(data['description'])
+    db_helper.insert_new_task(data['id'], data['name'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
@@ -53,7 +53,11 @@ def homepage():
 
 @app.route("/advance", methods=['POST'])
 def advanced():
-    db_helper.advanced_query()
-    result = {'success': True, 'response': 'Executed Advanced Query'}
-    
-    return jsonify(result)
+    items = db_helper.advanced_query()
+    return render_template("advanced_query.html", items=items)
+
+@app.route("/search", methods=['POST'])
+def search():
+    data = request.get_json()
+    items = db_helper.search(request.form['search_name'])
+    return render_template("search.html", items=items)

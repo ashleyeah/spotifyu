@@ -6,6 +6,16 @@ name = "pypi"
 [packages]
 spotipy = "*"
 mysql-connector-python = "*"
+sqlalchemy = "*"
+flask = "*"
+flask-sqlalchemy = "*"
+greenlet = "*"
+itsdangerous = "*"
+jinja2 = "*"
+markupsafe = "*"
+pymysql = "*"
+pyyaml = "*"
+werkzeug = "*"
 
 [dev-packages]
 
