@@ -41,7 +41,7 @@ def update(task_id):
 def create():
     """ recieves post requests to add new task """
     # data = request.get_json()
-    db_helper.insert_new_task(request.form['album_id'], request.form['name'])
+    db_helper.insert_new_task(request.form['album_id'], request.form['name'], request.form['date'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 

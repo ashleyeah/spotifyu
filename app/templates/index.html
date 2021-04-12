@@ -19,8 +19,8 @@
     <body>
 
     <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">TODO List Demo App</h1>
-      <p><mark>Do it now.</mark></p>
+      <h1 class="mt-5">Edit Artists</h1>
+      <p><mark>Edit and Change Music Artists</mark></p>
     </main>
     
 
@@ -44,15 +44,19 @@
                 <div class="input-group mb-3">
                     <form action="/create" method="POST">
                         <div class="form-group">
-                            <label for="album_id">Publisher ID</label>
+                            <label for="album_id">Album ID</label>
                             <input type="text" id="album_id" name="album_id" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <label for="name">Description</label>
+                            <label for="name">Name</label>
                             <input type="text" id="name" name="name" class="form-control"/>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Create</button>
+                            <label for="date">Release Date</label>
+                            <input type="text" id="date" name="date" class="form-control"/>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Save Changes</button>
                         </div>
                     </form>
                 </div>

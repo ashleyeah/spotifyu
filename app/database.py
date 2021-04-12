@@ -57,7 +57,7 @@ def update_status_entry(task_id: int, text: str) -> None:
     conn.close()
 
 
-def insert_new_task(album_id: str, name: str) -> str:
+def insert_new_task(album_id: str, name: str, date: str) -> str:
     """Insert new task to todo table.
 
     Args:
@@ -68,11 +68,8 @@ def insert_new_task(album_id: str, name: str) -> str:
 
     conn = db.connect()
     query = 'Insert Ignore Into Albums (album_id, name, release_date) VALUES ("{}", "{}", "{}");'.format(
-        album_id, name, '2021-04-11')
+        album_id, name, date)
     conn.execute(query)
-    # query_results = conn.execute("Select LAST_INSERT_ID();")
-    # query_results = [x for x in query_results]
-    # task_id = query_results[0][0]
     conn.close()
 
     return album_id
