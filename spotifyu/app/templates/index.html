@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Artists CRUD Demo</title>
+        <title>Albums CRUD Demo</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +20,7 @@
 
     <main role="main" class="container extra-bottom" style="width: 1500px">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Artist Page</mark></p>
+      <p><mark style="background-color: green; color: white; border-radius: 3px;">Album Page</mark></p>
     </main>
     
 
@@ -30,9 +30,9 @@
         <div>
             <form action="/search" method="POST">
                 <div class="form-group" style="padding-bottom:20px">
-                    <label for="search_name">Search Artist</label>
+                    <label for="search_name">Search Album</label>
                     <div class="input-group">
-                        <input type="text" id="search_name" name="search_name" placeholder="Artist" class="form-control width100">
+                        <input type="text" id="search_name" name="search_name" placeholder="Album" class="form-control width100">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-success">Search</button>
                         </span>
@@ -45,7 +45,7 @@
             <form action="/advance" method="POST" style="padding-bottom: 5px">
                 <button type="submit" class="btn btn-success btn-sm">Advanced Query</button>
             </form>
-            <button type="button" class="btn btn-outline-info btn-sm" style="color: green; border-color: green;" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Task">Add Artist</button>
+            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Album">Add Albums</button>
         </div>
 
         
@@ -53,18 +53,18 @@
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add an Artist</h5>
+                <h5 class="modal-title" id="Label">Add an Album</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
                 <div>
-                    <label for='artist_name'>Artist Name</label>
-                    <input type="text" class="form-control" id="artist_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
+                    <label for='album_name'>Album Name</label>
+                    <input type="text" class="form-control" id="album_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
                 <div>
-                    <label for='artist_id' id="task-form-display">Artist ID</label>
-                    <input type="text" class="form-control" id="artist_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
+                    <label for='album_id' id="task-form-display">Artist ID</label>
+                    <input type="text" class="form-control" id="album_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="modal-footer">
@@ -82,8 +82,9 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="task-id">Artist Name</th>
-            <th class="task">Artist ID</th>
+            <th class="task-id">Album Name</th>
+            <th class="task">Album ID</th>
+            <th class="status">Release Date</th>
             <!-- <th class="status">Release Date</th> -->
             <th class="update">Edit</th>
             <th class="update">Remove</th>
@@ -94,18 +95,17 @@
         {% for item in items %}
             <tr>
                 <td>{{item.name}}</td>
-                <td>{{item.artist_id}}</td>
+                <td>{{item.album_id}}</td>
+                <td>{{item.date}}</td>
                 
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.artist_id}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.artist_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.album_id}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.album_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
             </tr>
         {% endfor %}
         
         </tbody>
     </table>
     </div>
-
-
 
     <footer class="footer">
       <div class="container">

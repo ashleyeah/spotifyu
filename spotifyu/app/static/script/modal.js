@@ -7,17 +7,17 @@ $(document).ready(function () {
         const content = button.data('content') // Extract info from data-* attributes
 
         const modal = $(this)
-        if (taskID === 'New Task') {
+        if (taskID === 'New Album') {
             modal.find('.modal-title').text(taskID)
             $('#task-form-display').removeAttr('taskID')
         } else {
-            modal.find('.modal-title').text('Edit Artists Name')
+            modal.find('.modal-title').text('Edit Album Name')
             $('#task-form-display').attr('taskID', taskID)
         }
 
         if (content) {
-            modal.find('#artist_name').val(content);
-            modal.find('#artist_id').val(taskID);
+            modal.find('#album_name').val(content);
+            modal.find('#album_id').val(taskID);
         } else {
             modal.find('.form-control').val('');
         }
@@ -32,28 +32,8 @@ $(document).ready(function () {
             url: tID ? '/edit/' + tID : '/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
-                'id': $('#artist_id').val(),
-                'name': $('#artist_name').val() //puts the song name into data['description']
-            }),
-            success: function (res) {
-                console.log(res.response)
-                location.reload();
-            },
-            error: function () {
-                console.log('Error');
-            }
-        });
-    });
-
-    $('#submit-search').click(function () {
-        // const tID = $('#task-form-display').attr('taskID');
-        // console.log($('#task-modal').find('.form-control').val()) //prints out song name from .form-control
-        $.ajax({
-            type: 'POST',
-            url: '/search',
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                'name': $('#search').val() //puts the song name into data['description']
+                'id': $('#album_id').val(),
+                'name': $('#album_name').val() //puts the song name into data['description']
             }),
             success: function (res) {
                 console.log(res.response)
@@ -71,22 +51,6 @@ $(document).ready(function () {
             type: 'POST',
             url: '/delete/' + remove.data('source'),
             success: function (res) {
-                console.log(res.response)
-                location.reload();
-            },
-            error: function () {
-                console.log('Error');
-            }
-        });
-    });
-    
-    $('#advance-task').click(function () {
-        const advance = $(this)
-        $.ajax({
-            type: 'POST',
-            url: '/advance',
-            success: function (res) {
-                console.log("Done")
                 console.log(res.response)
                 location.reload();
             },

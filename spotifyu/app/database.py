@@ -9,13 +9,14 @@ def fetch_todo() -> dict:
     """
 
     conn = db.connect()
-    query_results = conn.execute("Select * From Artists ORDER BY artist_id DESC LIMIT 30;").fetchall()
+    query_results = conn.execute("Select * From Albums ORDER BY release_date DESC LIMIT 30;").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
         item = {
-            "artist_id": result[0],
-            "name": result[1]
+            "album_id": result[0],
+            "name": result[1],
+            "date": result[2]
         }
         todo_list.append(item)
 
@@ -32,7 +33,7 @@ def update_task_entry(task_id: str, text: str) -> None:
     """
 
     conn = db.connect()
-    query = 'UPDATE Artists SET artist_name = "{}" where artist_id = "{}";'.format(text, task_id)
+    query = 'UPDATE Albums SET name = "{}" where album_id="{}";'.format(text, task_id)
     conn.execute(query)
     conn.close()
 
@@ -52,7 +53,7 @@ def update_status_entry(task_id: int, text: str) -> None:
     conn.close()
 
 
-def insert_new_task(artist_id: str, name: str) ->  None:
+def insert_new_task(album_id: str, name: str) ->  None:
     """Insert new task to todo table.
     Args:
         text (str): Song name. Looks up the song name from SongsOld table, and
@@ -62,18 +63,18 @@ def insert_new_task(artist_id: str, name: str) ->  None:
 
     conn = db.connect()
     today = date.today()
-    query = 'Insert Ignore Into Artists (artist_id, artist_name) VALUES ("{}", "{}");'.format(
-        artist_id, name)
+    query = 'Insert Ignore Into Albums (album_id, name, release_date) VALUES ("{}", "{}", "{}");'.format(
+        album_id, name, today.strftime("%Y-%m-%d"))
     conn.execute(query)
     conn.close()
 
-    return artist_id
+    return album_id
 
 
 def remove_task_by_id(task_id: str) -> None:
     """ remove entries based on song ID """
     conn = db.connect()
-    query = 'Delete From Artists Where artist_id="{}";'.format(task_id) #task_id = song_id, also note- quotes around {}
+    query = 'Delete From Albums Where album_id="{}";'.format(task_id) #task_id = song_id, also note- quotes around {}
     conn.execute(query)
     conn.close()
 
@@ -93,20 +94,20 @@ def advanced_query() -> dict:
             "genres": result[1]
         }
         query_res.append(item)
-    print(query_res)
     return query_res
 
 def search(name: str) -> dict:
     conn = db.connect()
-    sql='SELECT * FROM Artists WHERE artist_name LIKE %s'
+    sql='SELECT * FROM Albums WHERE name LIKE %s'
     args=['%'+name+'%']
     conn.execute(sql,args)
     query_results = conn.execute(sql,args).fetchall()
     search_res = []
     for result in query_results:
         item = {
-            "artist_id": result[0],
+            "album_id": result[0],
             "name": result[1],
+            "date": result[2]
         }
         search_res.append(item)
     return search_res

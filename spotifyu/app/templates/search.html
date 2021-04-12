@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Artists CRUD Demo</title>
+        <title>Albums CRUD Demo</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,17 +20,18 @@
 
     <main role="main" class="container extra-bottom" style="width: 1500px">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Artist Page</mark></p>
+      <p><mark style="background-color: green; color: white; border-radius: 3px;">Album Page</mark></p>
     </main>
 
     <!--Todo Table-->
     <div class="container table-responsive" style="width:1500px">      
     <table class="table">
-        <h3>Search Results: </h3> 
+        <h4>Search Results: </h4> 
         <thead>
         <tr>
-            <th class="task-id">Artist Name</th>
-            <th class="task">Artist ID</th>
+            <th class="task-id">Album Name</th>
+            <th class="task">Album ID</th>
+            <th class="task">Release Date</th>
         </tr>
         </thead>
 
@@ -38,7 +39,8 @@
         {% for item in items %}
             <tr>
                 <td>{{item.name}}</td>
-                <td>{{item.artist_id}}</td>
+                <td>{{item.album_id}}</td>
+                <td>{{item.date}}</td>
         {% endfor %}
         
         </tbody>
