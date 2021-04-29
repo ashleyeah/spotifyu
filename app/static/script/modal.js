@@ -1,7 +1,7 @@
 $(document).ready(function () {
     // example: https://getbootstrap.com/docs/4.2/components/modal/
     // show modal
-    $('#task-modal').on('show.bs.modal', function (event) {
+    $('#album-modal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // Extract info from data-* attributes
         const content = button.data('content') // Extract info from data-* attributes
@@ -25,13 +25,12 @@ $(document).ready(function () {
         }
     })
 
-
-    $('#submit-task').click(function () {
+    $('#submit-album').click(function () {
         const tID = $('#task-form-display').attr('taskID');
-        console.log($('#task-modal').find('.form-control').val()) //prints out song name from .form-control
+        console.log($('#album-modal').find('.form-control').val()) //prints out song name from .form-control
         $.ajax({
             type: 'POST',
-            url: tID ? '/edit/' + tID : '/create',
+            url: tID ? '/album/edit/' + tID : '/album/create',
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
                 'id': $('#album_id').val(),
@@ -48,11 +47,55 @@ $(document).ready(function () {
         });
     });
 
-    $('.remove').click(function () {
+    $('.remove-album').click(function () {
         const remove = $(this)
         $.ajax({
             type: 'POST',
-            url: '/delete/' + remove.data('source'),
+            url: '/album/delete/' + remove.data('source'),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+    }); 
+
+    $('#artist-modal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget) // Button that triggered the modal
+        const taskID = button.data('source') // Extract info from data-* attributes
+        const content = button.data('content') // Extract info from data-* attributes
+
+        const modal = $(this)
+        if (taskID === 'New Artist') {
+            modal.find('.modal-title').text(taskID)
+            $('#task-form-display').removeAttr('taskID')
+        } else {
+            modal.find('.modal-title').text('Edit Artists Name')
+            $('#task-form-display').attr('artistID', taskID)
+        }
+
+        if (content) {
+            modal.find('#artist_name').val(content);
+            modal.find('#artist_id').val(taskID);
+        } else {
+            modal.find('.form-control').val('');
+        }
+    })
+
+    $('#submit-artist').click(function () {
+        const tID = $('#task-form-display').attr('taskID');
+        console.log(tID);
+        console.log($('#artist-modal').find('.form-control').val()) //prints out song name from .form-control
+        $.ajax({
+            type: 'POST',
+            url: tID ? '/artist/edit/' + tID : '/artist/create',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                'id': $('#artist_id').val(),
+                'name': $('#artist_name').val() //puts the song name into data['description']
+            }),
             success: function (res) {
                 console.log(res.response)
                 location.reload();
@@ -63,27 +106,13 @@ $(document).ready(function () {
         });
     });
 
-    $('.state').click(function () {
-        const state = $(this)
-        const tID = state.data('source')
-        const new_state = "Todo"
-        if (state.text() === "In Progress") {
-            new_state = "Complete"
-        } else if (state.text() === "Complete") {
-            new_state = "Todo"
-        } else if (state.text() === "Todo") {
-            new_state = "In Progress"
-        }
-
+    $('.remove-artist').click(function () {
+        const remove = $(this)
         $.ajax({
             type: 'POST',
-            url: '/edit/' + tID,
-            contentType: 'application/json;charset=UTF-8',
-            data: JSON.stringify({
-                'status': new_state
-            }),
+            url: '/artist/delete/' + remove.data('source'),
             success: function (res) {
-                console.log(res)
+                console.log(res.response)
                 location.reload();
             },
             error: function () {

@@ -7,28 +7,94 @@ import json
 import time
 import pandas as pd
 
+"""
 
-@app.route("/delete/<string:task_id>", methods=['POST'])
-def delete(task_id):
+DELETE FUNCTIONS
+
+"""
+@app.route("/album/delete/<string:task_id>", methods=['POST'])
+def delete_album(task_id):
     """ recieved post requests for entry delete """
 
     try:
-        db_helper.remove_task_by_id(task_id)
+        db_helper.remove_album(task_id)
+        result = {'success': True, 'response': 'Removed task'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong {}'.format(task_id)}        
+    return jsonify(result)
+
+@app.route("/artist/delete/<string:task_id>", methods=['POST'])
+def delete_artist(task_id):
+    """ recieved post requests for entry delete """
+
+    try:
+        db_helper.remove_artist(task_id)
+        result = {'success': True, 'response': 'Removed task'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong {}'.format(task_id)}        
+    return jsonify(result)
+
+@app.route("/song/delete/<string:task_id>", methods=['POST'])
+def delete_song(task_id):
+    """ recieved post requests for entry delete """
+
+    try:
+        db_helper.remove_song(task_id)
         result = {'success': True, 'response': 'Removed task'}
     except:
         result = {'success': False, 'response': 'Something went wrong {}'.format(task_id)}        
     return jsonify(result)
 
 
-@app.route("/edit/<string:task_id>", methods=['POST'])
-def update(task_id):
+
+"""
+
+UPDATE FUNCTIONS
+
+"""
+@app.route("/album/edit/<string:task_id>", methods=['POST'])
+def update_album(task_id):
+    """ recieved post requests for entry updates """
+    print("In update Album")
+    data = request.get_json()
+
+    try:
+        if "name" in data:
+            db_helper.update_album_entry(task_id, data["name"], data["date"])
+            result = {'success': True, 'response': 'Task Updated'}
+        else:
+            result = {'success': True, 'response': 'Nothing Updated'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+
+    return jsonify(result)
+
+@app.route("/artist/edit/<string:task_id>", methods=['POST'])
+def update_artist(task_id):
+    """ recieved post requests for entry updates """
+    print("In Update Artist")
+    data = request.get_json()
+
+    try:
+        if "name" in data:
+            db_helper.update_artist_entry(task_id, data["name"])
+            result = {'success': True, 'response': 'Task Updated'}
+        else:
+            result = {'success': True, 'response': 'Nothing Updated'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+
+    return jsonify(result)
+
+@app.route("/song/edit/<string:task_id>", methods=['POST'])
+def update_song(task_id):
     """ recieved post requests for entry updates """
 
     data = request.get_json()
 
     try:
         if "name" in data:
-            db_helper.update_task_entry(task_id, data["name"], data["date"])
+            db_helper.update_song_entry(task_id, data["name"], data["date"])
             result = {'success': True, 'response': 'Task Updated'}
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
@@ -38,11 +104,34 @@ def update(task_id):
     return jsonify(result)
 
 
-@app.route("/create", methods=['POST'])
-def create():
+
+
+
+""" 
+CREATE FUNCTIONS 
+ """
+@app.route("/album/create", methods=['POST'])
+def create_album():
     """ recieves post requests to add new task """
     data = request.get_json()
-    db_helper.insert_new_task(data['id'], data['name'], data['date'])
+    db_helper.insert_new_album(data['id'], data['name'], data['date'])
+    result = {'success': True, 'response': 'Done'}
+    return jsonify(result)
+
+@app.route("/artist/create", methods=['POST'])
+def create_artist():
+    """ recieves post requests to add new task """
+    data = request.get_json()
+    print(data['id'], data['name'])
+    db_helper.insert_new_artist(data['id'], data['name'])
+    result = {'success': True, 'response': 'Done'}
+    return jsonify(result)
+
+@app.route("/song/create", methods=['POST'])
+def create_song():
+    """ recieves post requests to add new task """
+    data = request.get_json()
+    db_helper.insert_new_song(data['id'], data['name'], data['date'], data['id'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
@@ -56,19 +145,67 @@ def homepage():
     if not authorized:
         return redirect('/login')
     else:
-        items = db_helper.fetch_albums()
-        return render_template("index.html", items=items)
+        return render_template("index.html")
 
-@app.route("/advance", methods=['POST'])
+
+"""
+
+Routing to different tables 
+
+"""
+@app.route("/album", methods=['POST'])
+def album():
+    items = db_helper.fetch_albums()
+    return render_template("album.html", items=items)
+
+
+
+@app.route("/artist", methods=['POST'])
+def artist():
+    items = db_helper.fetch_artists()
+    return render_template("artist.html", items=items)
+
+# @app.route("/song", methods=['POST'])
+# def song():
+#     items = db_helper.fetch_songs()
+#     return render_template("song.html", items=items)
+
+# @app.route("/genre", methods=['POST'])
+# def genre():
+#     items = db_helper.fetch_genres()
+#     return render_template("genre.html", items=items)
+
+# @app.route("/user-info", methods=['POST'])
+# def userInfo():
+#     items = db_helper.fetch_userInfo()
+#     return render_template("userInfo.html", items=items)
+
+
+
+
+""" 
+
+@app.route("/album/advance", methods=['POST'])
 def advanced():
-    items = db_helper.advanced_query()
-    return render_template("advanced_query.html", items=items)
+    items = db_helper.advanced_query_album()
+    return render_template("advanced_query.html", items=items) 
+"""
 
-@app.route("/search", methods=['POST'])
-def search():
+
+@app.route("/album/search", methods=['POST'])
+def search_album():
     data = request.get_json()
-    items = db_helper.search(request.form['search_name'])
+    items = db_helper.search_album(request.form['search_name'])
     return render_template("search.html", items=items)
+
+@app.route("/artist/search", methods=['POST'])
+def search_artist():
+    data = request.get_json()
+    items = db_helper.search_artist(request.form['search_name'])
+    return render_template("search.html", items=items)
+
+
+    
 
 @app.route('/login')
 def login():

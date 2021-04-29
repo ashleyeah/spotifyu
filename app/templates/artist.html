@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>Artists</title>
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" href="{{ url_for('static', filename='img/cs.ico') }}">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" 
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.css">
+        <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}">
+
+    </head>
+
+    <style>
+        html, body, main {
+            min-width: 1000px !important;
+            overflow-x: hidden !important;
+        }
+    </style>
+
+    <body>
+
+    <main role="main" class="container extra-bottom">
+      <h1 class="mt-5" style="color: green;">SpotifyU</h1>
+      <p><mark style="background-color: green; color: white; border-radius: 3px;">Artist Page</mark></p>
+    </main>
+    
+
+    <div class="container" style="min-width: 1000px !important;">    
+        
+        <!-- Button trigger modal -->
+        <div>
+            <form action="/artist/search" method="POST">
+                <div class="form-group" style="padding-bottom:20px">
+                    <label for="search_name">Search Artist</label>
+                    <div class="input-group">
+                        <input type="text" id="search_name" name="search_name" placeholder="Artist" class="form-control width100">
+                        <span class="input-group-btn">
+                            <button type="submit" class="btn btn-success">Search</button>
+                        </span>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div style="text-align: right;">
+            <form action="/artist/advance" method="POST" style="padding-bottom: 5px">
+                <button type="submit" class="btn btn-success btn-sm">Advanced Query</button>
+            </form>
+            <button type="button" class="btn btn-outline-info btn-sm" style="color: green; border-color: green;" data-bs-toggle="modal" data-bs-target="#artist-modal" data-source="New Artist">Add Artist</button>
+        </div>
+
+        
+        <div class="modal fade" id="artist-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Label">Add an Artist</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <label for='artist_name'>Artist Name</label>
+                    <input type="text" class="form-control" id="artist_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
+                </div>
+                <div>
+                    <label for='artist_id' id="task-form-display">Artist ID</label>
+                    <input type="text" class="form-control" id="artist_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="submit-artist" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+            </div>
+        </div>
+        </div>
+
+    </div>
+
+    <!--Todo Table-->
+    <div class="container table-responsive" style="min-width: 1000px !important;">          
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="task-id">Artist Name</th>
+            <th class="task">Artist ID</th>
+            <!-- <th class="status">Release Date</th> -->
+            <th class="update">Edit</th>
+            <th class="update">Remove</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        {% for item in items %}
+            <tr>
+                <td>{{item.name}}</td>
+                <td>{{item.artist_id}}</td>
+                
+                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#artist-modal" data-source="{{item.artist_id}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+                <td><button class="btn btn-outline-secondary btn-sm remove-artist" data-source="{{item.artist_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+            </tr>
+        {% endfor %}
+        
+        </tbody>
+    </table>
+    </div>
+
+
+
+    <footer class="footer">
+      <div class="container">
+            <p class="text-muted"><small>SpotifyU</small></p>
+      </div>
+    </footer>
+  </body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
+</html>

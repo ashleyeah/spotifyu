@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Albums CRUD Demo</title>
+        <title>SpotifyU</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="initial-scale=1">
@@ -27,7 +27,7 @@
 
     <main role="main" class="container extra-bottom">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Album Page</mark></p>
+      <p><mark style="background-color: green; color: white; border-radius: 3px;">Home Page</mark></p>
     </main>
     
 
@@ -35,88 +35,32 @@
         
         <!-- Button trigger modal -->
         <div>
-            <form action="/search" method="POST">
-                <div class="form-group" style="padding-bottom:20px">
-                    <label for="search_name">Search Album</label>
-                    <div class="input-group">
-                        <input type="text" id="search_name" name="search_name" placeholder="Album" class="form-control width100">
-                        <span class="input-group-btn">
-                            <button type="submit" class="btn btn-success">Search</button>
-                        </span>
-                    </div>
-                </div>
-            </form>
+            
         </div>
 
-        <div style="text-align: right;">
-            <form action="/advance" method="POST" style="padding-bottom: 5px">
+        <div style="text-align: center;">
+            <!-- <form action="/album" method="POST" style="padding-bottom: 5px">
                 <button type="submit" class="btn btn-success btn-sm">Advanced Query</button>
+            </form> -->
+            <form action="/album" method="POST" style="padding-bottom:5px">
+                <button type="submit" class="btn btn-outline-success btn-sm">Albums</button>
             </form>
-            <button type="button" class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Album">Add Albums</button>
+            <form action="/artist" method="POST" style="padding-bottom:5px">
+                <button type="submit" class="btn btn-outline-success btn-sm">Artists</button>
+            </form>
+            <form action="/song" method="POST" style="padding-bottom:5px">
+                <button type="submit" class="btn btn-outline-success btn-sm">Songs</button>
+            </form>
+            <form action="/genre" method="POST" style="padding-bottom:5px">
+                <button type="submit" class="btn btn-outline-success btn-sm">Genres</button>
+            </form>
+            <form action="/user-info" method="POST" style="padding-bottom:5px">
+                <button type="submit" class="btn btn-outline-success btn-sm">User Information</button>
+            </form>
+            
         </div>
         
-        <div class="modal fade" id="task-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add an Album</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <div class="modal-body">
-                <div>
-                    <label for='album_name'>Album Name</label>
-                    <input type="text" class="form-control" id="album_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-                <div>
-                    <label for='album_id' id="task-form-display">Album ID</label>
-                    <input type="text" class="form-control" id="album_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-                <div>
-                    <label for='release_date' id="task-form-display">Release Date</label>
-                    <input type="text" class="form-control" id="release_date" placeholder="Release Date" aria-label="task-name" aria-describedby="basic-addon1">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-task" type="button" class="btn btn-primary">Save changes</button>
-            </div>
-            </div>
-        </div>
-        </div>
-
-    </div>
-
-    <!--Album Table-->
-    <div class="container table-responsive" style="min-width: 1000px !important;">          
-    <table class="table">
-        <thead>
-        <tr>
-            <th class="task-id"></th>
-            <th class="task-id">Album Name</th>
-            <th class="status">Artists</th>
-            <th class="status">Release Date</th>
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>
-        </tr>
-        </thead>
-
-        <tbody>
-        {% for item in items %}
-            <tr>
-                <td><img src={{item.img}} height=100 width=100></img></td>
-                <td>{{item.name}}</td>
-                <td>{{item.artists}}</td>
-                <td>{{item.date}}</td>
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.album_id}}" data-content="{{item.name}}" data-date="{{item.date}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.album_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
-            </tr>
-        {% endfor %}
         
-        </tbody>
-    </table>
-    </div>
 
     <footer class="footer">
       <div class="container">
