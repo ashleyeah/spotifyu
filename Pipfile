@@ -16,6 +16,8 @@ markupsafe = "*"
 pymysql = "*"
 pyyaml = "*"
 werkzeug = "*"
+bottle = "*"
+pandas = "*"
 
 [dev-packages]
 

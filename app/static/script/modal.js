@@ -5,6 +5,7 @@ $(document).ready(function () {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // Extract info from data-* attributes
         const content = button.data('content') // Extract info from data-* attributes
+        const date = button.data('date')
 
         const modal = $(this)
         if (taskID === 'New Album') {
@@ -18,6 +19,7 @@ $(document).ready(function () {
         if (content) {
             modal.find('#album_name').val(content);
             modal.find('#album_id').val(taskID);
+            modal.find('#release_date').val(date);
         } else {
             modal.find('.form-control').val('');
         }
@@ -33,7 +35,8 @@ $(document).ready(function () {
             contentType: 'application/json;charset=UTF-8',
             data: JSON.stringify({
                 'id': $('#album_id').val(),
-                'name': $('#album_name').val() //puts the song name into data['description']
+                'name': $('#album_name').val(), //puts the song name into data['description']
+                'date': $('#release_date').val()
             }),
             success: function (res) {
                 console.log(res.response)

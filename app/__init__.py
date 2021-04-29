@@ -43,6 +43,9 @@ def init_connection_engine():
 app = Flask(__name__)
 db = init_connection_engine()
 
+app.secret_key = '1234'
+app.config['SESSION_COOKIE_NAME'] = 'Session'
+
 # To prevent from using a blueprint, we use a cyclic import
 # This also means that we need to place this import here
 # pylint: disable=cyclic-import, wrong-import-position
