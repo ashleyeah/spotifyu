@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Artists</title>
+        <title>Songs</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='styles/custom.css') }}">
 
     </head>
-
+    
     <style>
         html, body, main {
             min-width: 1000px !important;
@@ -25,21 +25,21 @@
 
     <body>
 
-    <main role="main" class="container extra-bottom">
+    <main role="main" class="container extra-bottom" style="width: 1500px">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Artist Page</mark></p>
+      <p><mark style="background-color: green; color: white; border-radius: 3px;">Songs Page</mark></p>
     </main>
     
 
-    <div class="container" style="min-width: 1000px !important;">    
+    <div class="container">    
         
         <!-- Button trigger modal -->
         <div>
-            <form action="/artist/search" method="POST">
+            <form action="/song/search" method="POST">
                 <div class="form-group" style="padding-bottom:20px">
-                    <label for="search_name">Search Artist</label>
+                    <label for="search_name">Search Song</label>
                     <div class="input-group">
-                        <input type="text" id="search_name" name="search_name" placeholder="Artist" class="form-control width100">
+                        <input type="text" id="search_name" name="search_name" placeholder="Song" class="form-control width100">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-success">Search</button>
                         </span>
@@ -49,34 +49,38 @@
         </div>
 
         <div style="text-align: right;">
-            <!-- <form action="/artist/advance" method="POST" style="padding-bottom: 5px">
+            <!-- <form action="/advance" method="POST" style="padding-bottom: 5px">
                 <button type="submit" class="btn btn-success btn-sm">Advanced Query</button>
             </form> -->
-            <button type="button" class="btn btn-outline-info btn-sm" style="color: green; border-color: green;" data-bs-toggle="modal" data-bs-target="#artist-modal" data-source="New Artist">Add Artist</button>
+            <button type="button" class="btn btn-outline-info btn-sm" style="color: green; border-color: green;" data-bs-toggle="modal" data-bs-target="#song-modal" data-source="New Song">Add Song</button>
         </div>
 
         
-        <div class="modal fade" id="artist-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
+        <div class="modal fade" id="song-modal" tabindex="-1" aria-labelledby="Label" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="Label">Add an Artist</h5>
+                <h5 class="modal-title" id="Label">Add a Song</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
             <div class="modal-body">
                 <div>
-                    <label for='artist_name'>Artist Name</label>
-                    <input type="text" class="form-control" id="artist_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
+                    <label for='song_name'>Song Name</label>
+                    <input type="text" class="form-control" id="song_name" placeholder="Name" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
                 <div>
-                    <label for='artist_id' id="task-form-display">Artist ID</label>
-                    <input type="text" class="form-control" id="artist_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
+                    <label for='song_id' id="task-form-display">Song ID</label>
+                    <input type="text" class="form-control" id="song_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
+                </div>
+                <div>
+                    <label for='album_id' id="task-form-display">Album ID</label>
+                    <input type="text" class="form-control" id="album_id" placeholder="22 character ID" aria-label="task-name" aria-describedby="basic-addon1">
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button id="submit-artist" type="button" class="btn btn-primary">Save changes</button>
+                <button id="submit-song" type="button" class="btn btn-primary">Save changes</button>
             </div>
             </div>
         </div>
@@ -89,9 +93,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="task-id">Artist Name</th>
-            <th class="task">Artist ID</th>
-            <!-- <th class="status">Release Date</th> -->
+            <th class="song_id">Song ID</th>
+            <th class="song_name">Song Name</th>
+            <th class="release">Release Date</th>
+            <th class="album_id">Album ID</th>
             <th class="update">Edit</th>
             <th class="update">Remove</th>
         </tr>
@@ -100,11 +105,12 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{item.name}}</td>
-                <td>{{item.artist_id}}</td>
-                
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#artist-modal" data-source="{{item.artist_id}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-                <td><button class="btn btn-outline-secondary btn-sm remove-artist" data-source="{{item.artist_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                <td>{{item.song_id}}</td>
+                <td>{{item.song_name}}</td>
+                <td>{{item.release_date}}</td>
+                <td>{{item.album_id}}</td>
+                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#song-modal" data-source="{{item.song_id}}" data-content="{{item.song_name}}" data-album="{{item.album_id}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+                <td><button class="btn btn-outline-secondary btn-sm remove-song" data-source="{{item.song_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
             </tr>
         {% endfor %}
         
@@ -125,4 +131,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0" crossorigin="anonymous"></script>
     <script src="{{ url_for('static', filename='script/modal.js') }}"></script>
+
 </html>

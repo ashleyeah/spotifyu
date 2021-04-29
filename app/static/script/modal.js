@@ -1,6 +1,12 @@
 $(document).ready(function () {
     // example: https://getbootstrap.com/docs/4.2/components/modal/
     // show modal
+    
+    
+    /***********************************************
+    *                 Album Modal                  *
+    *                                              *
+    ***********************************************/
     $('#album-modal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // Extract info from data-* attributes
@@ -62,18 +68,24 @@ $(document).ready(function () {
         });
     }); 
 
+
+    /***********************************************
+    *                 Artist Modal                 *
+    *                                              *
+    ***********************************************/
     $('#artist-modal').on('show.bs.modal', function (event) {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // Extract info from data-* attributes
         const content = button.data('content') // Extract info from data-* attributes
 
         const modal = $(this)
+        console.log(taskID)
         if (taskID === 'New Artist') {
             modal.find('.modal-title').text(taskID)
             $('#task-form-display').removeAttr('taskID')
         } else {
             modal.find('.modal-title').text('Edit Artists Name')
-            $('#task-form-display').attr('artistID', taskID)
+            $('#task-form-display').attr('taskID', taskID)
         }
 
         if (content) {
@@ -84,9 +96,10 @@ $(document).ready(function () {
         }
     })
 
+
     $('#submit-artist').click(function () {
         const tID = $('#task-form-display').attr('taskID');
-        console.log(tID);
+        //console.log(tID); if this is NULL, do create
         console.log($('#artist-modal').find('.form-control').val()) //prints out song name from .form-control
         $.ajax({
             type: 'POST',
@@ -111,6 +124,76 @@ $(document).ready(function () {
         $.ajax({
             type: 'POST',
             url: '/artist/delete/' + remove.data('source'),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+    });
+
+
+    /***********************************************
+    *                 Song Modal                   *
+    *                                              *
+    ***********************************************/
+    $('#song-modal').on('show.bs.modal', function (event) {
+        const button = $(event.relatedTarget) // Button that triggered the modal
+        const taskID = button.data('source') // source = song_id
+        const content = button.data('content') // content = song_name
+        const albumContent = button.data('album') // album = album_id
+        const modal = $(this)
+        console.log("outside if statement")
+        if (taskID === 'New Song') {
+            modal.find('.modal-title').text(taskID)
+            console.log("got in here")
+            console.log(modal.find('.modal-title').text(taskID))
+            $('#task-form-display').removeAttr('taskID')
+        } else {
+            modal.find('.modal-title').text('Edit Song Name')
+            $('#task-form-display').attr('taskID', taskID)
+        }
+
+        if (content) {
+            modal.find('#song_name').val(content);
+            modal.find('#song_id').val(taskID);
+            modal.find('#album_id').val(albumContent);
+        } else {
+            modal.find('.form-control').val('');
+        }
+    })
+
+
+    $('#submit-song').click(function () {
+        const tID = $('#task-form-display').attr('taskID');
+        console.log(tID)
+        console.log($('#task-modal').find('.form-control').val()) //prints out song name from .form-control
+        $.ajax({
+            type: 'POST',
+            url: tID ? '/song/edit/' + tID : '/song/create',
+            contentType: 'application/json;charset=UTF-8',
+            data: JSON.stringify({
+                'song_name': $('#song_name').val(),
+                'song_id': $('#song_id').val(), //puts the song name into data['description']
+                'album_id': $('#album_id').val()
+            }),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+    });
+
+    $('.remove-song').click(function () {
+        const remove = $(this)
+        $.ajax({
+            type: 'POST',
+            url: '/song/delete/' + remove.data('source'),
             success: function (res) {
                 console.log(res.response)
                 location.reload();

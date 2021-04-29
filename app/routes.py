@@ -71,6 +71,8 @@ def update_album(task_id):
 
 @app.route("/artist/edit/<string:task_id>", methods=['POST'])
 def update_artist(task_id):
+
+    print("We are in update artist")
     """ recieved post requests for entry updates """
     print("In Update Artist")
     data = request.get_json()
@@ -89,12 +91,13 @@ def update_artist(task_id):
 @app.route("/song/edit/<string:task_id>", methods=['POST'])
 def update_song(task_id):
     """ recieved post requests for entry updates """
-
+    print("We are in update song")
     data = request.get_json()
 
     try:
-        if "name" in data:
-            db_helper.update_song_entry(task_id, data["name"], data["date"])
+        if "song_name" in data:
+            print(task_id, data['song_name'])
+            db_helper.update_song_entry(task_id, data['song_name'])
             result = {'success': True, 'response': 'Task Updated'}
         else:
             result = {'success': True, 'response': 'Nothing Updated'}
@@ -122,6 +125,7 @@ def create_album():
 def create_artist():
     """ recieves post requests to add new task """
     data = request.get_json()
+    print("IN ARTIST CREATE")
     print(data['id'], data['name'])
     db_helper.insert_new_artist(data['id'], data['name'])
     result = {'success': True, 'response': 'Done'}
@@ -130,10 +134,17 @@ def create_artist():
 @app.route("/song/create", methods=['POST'])
 def create_song():
     """ recieves post requests to add new task """
+    print("We are in create song.")
     data = request.get_json()
-    db_helper.insert_new_song(data['id'], data['name'], data['date'], data['id'])
+    
+    db_helper.insert_new_song(data['song_id'], data['song_name'], data['album_id'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
+
+
+
+
+
 
 
 @app.route("/")
@@ -158,17 +169,15 @@ def album():
     items = db_helper.fetch_albums()
     return render_template("album.html", items=items)
 
-
-
 @app.route("/artist", methods=['POST'])
 def artist():
     items = db_helper.fetch_artists()
     return render_template("artist.html", items=items)
 
-# @app.route("/song", methods=['POST'])
-# def song():
-#     items = db_helper.fetch_songs()
-#     return render_template("song.html", items=items)
+@app.route("/song", methods=['POST'])
+def song():
+    items = db_helper.fetch_songs()
+    return render_template("song.html", items=items)
 
 # @app.route("/genre", methods=['POST'])
 # def genre():
@@ -196,14 +205,19 @@ def advanced():
 def search_album():
     data = request.get_json()
     items = db_helper.search_album(request.form['search_name'])
-    return render_template("search.html", items=items)
+    return render_template("searchAlbum.html", items=items)
 
 @app.route("/artist/search", methods=['POST'])
 def search_artist():
     data = request.get_json()
     items = db_helper.search_artist(request.form['search_name'])
-    return render_template("search.html", items=items)
+    return render_template("searchArtist.html", items=items)
 
+@app.route("/song/search", methods=['POST'])
+def search_song():
+    data = request.get_json()
+    items = db_helper.search_song(request.form['search_name'])
+    return render_template("searchSong.html", items=items)
 
     
 

@@ -171,6 +171,21 @@ def remove_artist(task_id: str) -> None:
     conn.execute(query)
     conn.close()
 
+def search_artist(name: str) -> dict:
+    conn = db.connect()
+    sql='SELECT * FROM Artists WHERE artist_name LIKE %s'
+    args=['%'+name+'%']
+    conn.execute(sql,args)
+    query_results = conn.execute(sql,args).fetchall()
+    search_res = []
+    for result in query_results:
+        item = {
+            "artist_id": result[0],
+            "name": result[1],
+        }
+        search_res.append(item)
+    return search_res
+
 
 """ --------------------------------------------------"""
 """ -----------------SONGS FUNCTION -----------------"""
@@ -188,7 +203,7 @@ def fetch_songs() -> dict:
     for result in query_results:
         item = {
             "song_id": result[0],
-            "name": result[1],
+            "song_name": result[1],
             "release_date": result[2],
             "album_id": result[3]
         }
@@ -226,3 +241,35 @@ def insert_new_song(song_id: str, name: str, album_id: str) ->  None:
     conn.close()
 
     return song_id
+
+
+
+def search_song(name: str) -> dict:
+    conn = db.connect()
+    sql='SELECT * FROM Songs WHERE name LIKE %s'
+    args=['%'+name+'%']
+    conn.execute(sql,args)
+    query_results = conn.execute(sql,args).fetchall()
+    search_res = []
+    for result in query_results:
+        item = {
+            "song_id": result[0],
+            "song_name": result[1],
+            "release_date": result[2],
+            "album_id": result[3]
+        }
+        search_res.append(item)
+    return search_res
+    
+
+def remove_song(task_id: str) -> None:
+    """ remove entries based on song ID """
+    conn = db.connect()
+    query = 'Delete From Songs Where song_id="{}";'.format(task_id) #task_id = song_id, also note- quotes around {}
+    conn.execute(query)
+    conn.close()
+
+
+""" --------------------------------------------------"""
+""" -----------------GENRE FUNCTION-------------------"""
+"""---------------------------------------------------"""
