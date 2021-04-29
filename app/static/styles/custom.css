@@ -5,13 +5,27 @@
 html {
     position: relative;
     min-height: 100%;
+    background-color: seagreen;
+    color: seagreen;
 }
 
 body {
     /* Margin bottom by footer height */
     margin-bottom: 2em;
-    background-color: white;
+    background-color: seagreen;
+    color: seagreen;
 }
+
+.button {
+    background-color:black;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
 
 .footer {
     position: absolute;
@@ -32,11 +46,13 @@ hr {
 .table td {
     text-align: center;
     vertical-align: middle;
+    background-color: white;
 }
 
 .table tr {
     text-align: center;
     vertical-align: middle;
+    background-color: white;
 }
 
 /* bootstrap modifications */

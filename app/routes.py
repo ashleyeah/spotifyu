@@ -47,6 +47,18 @@ def delete_song(task_id):
 
 
 
+@app.route("/genre/delete/<int:song_id>", methods=['POST'])
+def delete(song_id):
+    """ recieved post requests for entry delete """
+
+    try:
+        db_helper.remove_genre_id(song_id)
+        result = {'success': True, 'response': 'Removed task'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+
+    return jsonify(result)
+
 """
 
 UPDATE FUNCTIONS
@@ -107,6 +119,22 @@ def update_song(task_id):
     return jsonify(result)
 
 
+@app.route("/genre/edit/<int:task_id>", methods=['POST'])
+def update(task_id):
+    """ recieved post requests for entry updates """
+
+    data = request.get_json()
+
+    try:
+        if "name" in data:
+            db_helper.update_name_genre(task_id, data["name"])
+            result = {'success': True, 'response': 'Task Updated'}
+        else:
+            result = {'success': True, 'response': 'Nothing Updated'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+
+    return jsonify(result)
 
 
 
@@ -141,6 +169,13 @@ def create_song():
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
+@app.route("/genre/create", methods=['POST'])
+def create():
+    """ recieves post requests to add new task """
+    data = request.get_json()
+    db_helper.insert_new_genre(data["name"])
+    result = {'success': True, 'response': 'Done'}
+    return jsonify(result)
 
 
 
@@ -179,10 +214,10 @@ def song():
     items = db_helper.fetch_songs()
     return render_template("song.html", items=items)
 
-# @app.route("/genre", methods=['POST'])
-# def genre():
-#     items = db_helper.fetch_genres()
-#     return render_template("genre.html", items=items)
+@app.route("/genre", methods=['POST'])
+def genre():
+    items = db_helper.fetch_genres()
+    return render_template("genre.html", items=items)
 
 # @app.route("/user-info", methods=['POST'])
 # def userInfo():
@@ -218,6 +253,11 @@ def search_song():
     data = request.get_json()
     items = db_helper.search_song(request.form['search_name'])
     return render_template("searchSong.html", items=items)
+
+@app.route("/genre/search", methods=['POST'])
+def search_by_name():
+    res = db_helper.search_by_genre_name(request.form['search_name'])
+    return render_template('searchGenre.html', items = res)
 
     
 

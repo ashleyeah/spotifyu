@@ -273,3 +273,106 @@ def remove_song(task_id: str) -> None:
 """ --------------------------------------------------"""
 """ -----------------GENRE FUNCTION-------------------"""
 """---------------------------------------------------"""
+
+def fetch_genres() -> dict:
+    """Reads all tasks listed in the todo table
+
+    Returns:
+        A list of dictionaries
+    """
+
+    conn = db.connect()
+    query_results = conn.execute("Select * from Genres ORDER BY genre_id;").fetchall()
+    conn.close()
+    todo_list = []
+    for result in query_results:
+        item = {
+            "id": result[0],
+            "name": result[1]
+        }
+        todo_list.append(item)
+
+    return todo_list
+
+
+def update_name_genre(task_id: int, text: str) -> None:
+    """Updates task description based on given `task_id`
+
+    Args:
+        task_id (int): Targeted task_id
+        text (str): Updated description
+
+    Returns:
+        None
+    """
+    conn = db.connect()
+    query = 'Update Genres SET name = "{}" where genre_id = {};'.format(text, task_id)
+    conn.execute(query)
+    conn.close()
+
+def insert_new_genre(name: str) ->  int:
+    """Insert new task to todo table.
+
+    Args:
+        text (str): Task description
+
+    Returns: The task ID for the inserted entry
+    """
+
+    conn = db.connect()
+    min_id = conn.execute('SELECT MIN(genre_id) FROM Genres;').fetchall()[0][0]
+    if min_id != 1:
+        first_empty_id = 1
+    else:
+        query1 = 'SELECT a.genre_id+1 AS start FROM Genres AS a, Genres AS b WHERE a.genre_id < b.genre_id GROUP BY a.genre_id HAVING start < MIN(b.genre_id) LIMIT 1'
+        conn.execute(query1)
+        query_res = conn.execute(query1).fetchall()
+        if not query_res:
+            first_empty_id = conn.execute('SELECT MAX(genre_id) FROM Genres;').fetchall()[0][0] + 1
+        else:
+            first_empty_id = query_res[0][0]
+    query = 'INSERT INTO Genres (genre_id, name) VALUES ("{}", "{}");'.format(first_empty_id, name)
+    print(first_empty_id)
+    conn.execute(query)
+    conn.close()
+
+    return first_empty_id
+
+
+def remove_genre_id(id: int) -> None:
+    """ remove entries based on task ID """
+
+    conn = db.connect()
+    query = 'DELETE From Genres where genre_id={};'.format(id)
+    conn.execute(query)
+    conn.close()
+
+
+def genre_advanced_query():
+    conn = db.connect()
+    query = 'SELECT ag.genre_name, COUNT(sa.song_id) AS song_count FROM Artist_to_Genre ag JOIN SongsArtists as sa USING(artist_id) GROUP BY ag.genre_name ORDER BY song_count DESC LIMIT 15;'
+    res = conn.execute(query).fetchall()
+    conn.close()
+    print(res)
+    result = []
+    for r in res:
+        item = {
+            "id": r[0],
+            "name": r[1]
+        }
+        result.append(item)
+    return result
+
+def search_by_genre_name(name: str):
+    conn = db.connect()
+    query = "SELECT * FROM Genres WHERE name LIKE '%%{}%%' ORDER BY genre_id;".format(name)
+    res = conn.execute(query).fetchall()
+    result = []
+    for r in res:
+        item = {
+            "id": r[0],
+            "name": r[1]
+        }
+        result.append(item)
+    conn.close()
+    return result
