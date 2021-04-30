@@ -413,7 +413,6 @@ def search_by_genre_name(name: str):
     conn.close()
     return result
 
-
 def user_top_tracks(access_token: str) -> dict:
     sp = spotipy.Spotify(auth=access_token)
     items = []

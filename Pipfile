@@ -18,6 +18,8 @@ pyyaml = "*"
 werkzeug = "*"
 bottle = "*"
 pandas = "*"
+uuid = "*"
+flask-session = "*"
 
 [dev-packages]
 
