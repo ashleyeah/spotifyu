@@ -25,13 +25,13 @@
 
     <body>
 
-    <main role="main" class="container extra-bottom" style="width: 1500px">
+    <main role="main" class="container extra-bottom">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
       <p><mark style="background-color: green; color: white; border-radius: 3px;">Songs Page</mark></p>
     </main>
     
 
-    <div class="container">    
+    <div class="container" style="min-width: 1000px !important;">    
         
         <!-- Button trigger modal -->
         <div>
@@ -93,10 +93,10 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="song_id">Song ID</th>
+            <th class="song_id"></th>
             <th class="song_name">Song Name</th>
             <th class="release">Release Date</th>
-            <th class="album_id">Album ID</th>
+            <th class="album_id">Album Name</th>
             <th class="update">Edit</th>
             <th class="update">Remove</th>
         </tr>
@@ -105,10 +105,11 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{item.song_id}}</td>
+                <td><img src={{item.img}} height=100 width=100></img></td>
+                <!-- <td>{{item.song_id}}</td> -->
                 <td>{{item.song_name}}</td>
                 <td>{{item.release_date}}</td>
-                <td>{{item.album_id}}</td>
+                <td>{{item.album_name}}</td>
                 <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#song-modal" data-source="{{item.song_id}}" data-content="{{item.song_name}}" data-album="{{item.album_id}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
                 <td><button class="btn btn-outline-secondary btn-sm remove-song" data-source="{{item.song_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
             </tr>

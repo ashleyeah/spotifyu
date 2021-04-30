@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Albums CRUD Demo</title>
+        <title>Album Results</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,9 +16,16 @@
 
     </head>
 
-    <body style="min-width: 1000px !important;">
+    <style>
+        html, body, main {
+            min-width: 1000px !important;
+            overflow-x: hidden !important;
+        }
+    </style>
 
-    <main role="main" class="container extra-bottom" style="min-width: 1000px !important;">
+    <body>
+
+    <main role="main" class="container extra-bottom">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
       <p><mark style="background-color: green; color: white; border-radius: 3px;">Album Page</mark></p>
     </main>
@@ -64,7 +71,8 @@
             <th></th>
             <th class="task-id">Album Name</th>
             <th class="task">Artists</th>
-            <th class="status">Release Date</th>
+            <th>Songs</th>
+            <th class="status">Type</th>
             <th class="update">Edit</th>
             <th class="update">Remove</th>
         </tr>
@@ -76,7 +84,8 @@
                 <td><img src={{item.img}} height=100 width=100></td>
                 <td>{{item.name}}</td>
                 <td>{{item.artists}}</td>
-                <td>{{item.date}}</td>
+                <td>{{item.songs}}</td>
+                <td>{{item.type}}</td>
                 
                 <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.album_id}}" data-content="{{item.name}}" data-date="{{item.date}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
                 <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.album_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
@@ -85,7 +94,7 @@
         
         </tbody>
     </table>
-    <form style="text-align: right;" action="/">
+    <form style="text-align: right;" action="/album">
         <button type="submit" class="btn btn-secondary">Back</button>
     </form>
     </div>

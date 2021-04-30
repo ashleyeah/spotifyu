@@ -89,9 +89,8 @@
     <table class="table">
         <thead>
         <tr>
-            <th class="task-id">Artist Name</th>
-            <th class="task">Artist ID</th>
-            <!-- <th class="status">Release Date</th> -->
+            <th class="task-id"></th>
+            <th class="task">Artist Name</th>
             <th class="update">Edit</th>
             <th class="update">Remove</th>
         </tr>
@@ -100,8 +99,8 @@
         <tbody>
         {% for item in items %}
             <tr>
+                <td><img src={{item.img}} height=100 width=100></img></td>
                 <td>{{item.name}}</td>
-                <td>{{item.artist_id}}</td>
                 
                 <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#artist-modal" data-source="{{item.artist_id}}" data-content="{{item.name}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
                 <td><button class="btn btn-outline-secondary btn-sm remove-artist" data-source="{{item.artist_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>

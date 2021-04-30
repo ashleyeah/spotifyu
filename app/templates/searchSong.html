@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Song CRUD Demo</title>
+        <title>Song Results</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,38 +16,49 @@
 
     </head>
 
+    <style>
+        html, body, main {
+            min-width: 1000px !important;
+            overflow-x: hidden !important;
+        }
+    </style>
+
     <body>
 
-    <main role="main" class="container extra-bottom" style="width: 1500px">
+    <main role="main" class="container extra-bottom">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
       <p><mark style="background-color: green; color: white; border-radius: 3px;">Song Page</mark></p>
     </main>
 
     <!--Todo Table-->
-    <div class="container table-responsive" style="width:1500px">      
+    <div class="container table-responsive" style="min-width: 1000px !important;">      
     <table class="table">
         <h3>Search Results: </h3> 
         <thead>
         <tr>
-            <th class="task-id">Song ID</th>
-            <th class="task">Song Name</th>
-            <th class="task">Release Date</th>
-            <th class="task">Album ID</th>
+            <th class="song_id"></th>
+            <th class="song_name">Song Name</th>
+            <th class="release">Release Date</th>
+            <th class="album_id">Album Name</th>
+            <th class="update">Edit</th>
+            <th class="update">Remove</th>
         </tr>
         </thead>
 
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{item.song_id}}</td>
+                <td><img src={{item.img}} height=100 width=100></img></td>
+                <!-- <td>{{item.song_id}}</td> -->
                 <td>{{item.song_name}}</td>
                 <td>{{item.release_date}}</td>
-                <td>{{item.album_id}}</td>
+                <td>{{item.album_name}}</td>
+            </tr>
         {% endfor %}
         
         </tbody>
     </table>
-    <form style="text-align: right;" action="/">
+    <form style="text-align: right;" action="/song">
         <button type="submit" class="btn btn-secondary">Back</button>
     </form>
     </div>

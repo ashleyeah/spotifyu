@@ -27,7 +27,7 @@ def fetch_albums() -> dict:
         for i in range(1, len(album['artists'])):
             artists += ", " + album['artists'][i]['name']
         item = {
-            "img": album['images'][0]['url'],
+            "img": album['images'][1]['url'],
             "artists": artists,
             "album_id": result[0],
             "name": result[1],
@@ -99,25 +99,28 @@ def search_album(name: str) -> dict:
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     conn = db.connect()
-    sql='SELECT * FROM Albums WHERE name LIKE %s LIMIT 50'
-    args=['%'+name+'%']
-    conn.execute(sql,args)
+    # sql='SELECT * FROM Albums WHERE name LIKE %s LIMIT 50'
+    # args=['%'+name+'%']
+    # conn.execute(sql,args)
 
-    query_results = conn.execute(sql,args).fetchall()
+    query = 'CALL `main`.`SearchAlbum`("{}");'.format(name)
+
+    query_results = conn.execute(query).fetchall()
     search_res = []
 
     for result in query_results:
         urn = 'spotify:album:{}'.format(result[0].strip())
         album = sp.album(urn)
-        artists = album['artists'][0]['name']
-        for i in range(1, len(album['artists'])):
-            artists += ", " + album['artists'][i]['name']
+        # artists = album['artists'][0]['name']
+        # for i in range(1, len(album['artists'])):
+        #     artists += ", " + album['artists'][i]['name']
         item = {
-            "img": album['images'][0]['url'],
-            "artists": artists,
+            "img": album['images'][1]['url'],
             "album_id": result[0],
             "name": result[1],
-            "date": result[2]
+            "artists": result[2],
+            "songs": result[4],
+            "type": result[3]
         }
         search_res.append(item)
     return search_res
@@ -133,12 +136,23 @@ def fetch_artists() -> dict:
         A list of dictionaries
     """
 
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
     conn = db.connect()
-    query_results = conn.execute("Select * From Artists ORDER BY artist_id DESC LIMIT 30;").fetchall()
+    query_results = conn.execute("Select * From Artists ORDER BY artist_id DESC LIMIT 50;").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
+        urn = 'spotify:artist:{}'.format(result[0].strip())
+        artist = sp.artist(urn)
+        img = ''
+        if len(artist['images']) > 0:
+            img = artist['images'][1]['url']
+        else:
+            img = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
         item = {
+            "img": img,
             "artist_id": result[0],
             "name": result[1]
         }
@@ -172,6 +186,9 @@ def remove_artist(task_id: str) -> None:
     conn.close()
 
 def search_artist(name: str) -> dict:
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
     conn = db.connect()
     sql='SELECT * FROM Artists WHERE artist_name LIKE %s'
     args=['%'+name+'%']
@@ -179,9 +196,17 @@ def search_artist(name: str) -> dict:
     query_results = conn.execute(sql,args).fetchall()
     search_res = []
     for result in query_results:
+        urn = 'spotify:artist:{}'.format(result[0].strip())
+        artist = sp.artist(urn)
+        img = ''
+        if len(artist['images']) > 0:
+            img = artist['images'][1]['url']
+        else:
+            img = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
         item = {
+            "img": img,
             "artist_id": result[0],
-            "name": result[1],
+            "name": result[1]
         }
         search_res.append(item)
     return search_res
@@ -196,16 +221,22 @@ def fetch_songs() -> dict:
         A list of dictionaries
     """
 
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
     conn = db.connect()
-    query_results = conn.execute("Select * From Songs LIMIT 30;").fetchall()
+    query_results = conn.execute("Select s.song_id, s.name, s.release_date, a.name From Songs s JOIN Albums a USING(album_id) LIMIT 30;").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
+        urn = 'spotify:track:{}'.format(result[0].strip())
+        song = sp.track(urn)
         item = {
+            "img": song['album']['images'][1]['url'],
             "song_id": result[0],
             "song_name": result[1],
             "release_date": result[2],
-            "album_id": result[3]
+            "album_name": result[3]
         }
         todo_list.append(item)
 
@@ -242,21 +273,26 @@ def insert_new_song(song_id: str, name: str, album_id: str) ->  None:
 
     return song_id
 
-
-
 def search_song(name: str) -> dict:
+
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
     conn = db.connect()
-    sql='SELECT * FROM Songs WHERE name LIKE %s'
+    sql='SELECT s.song_id, s.name, s.release_date, a.name FROM Songs s JOIN Albums a USING(album_id) WHERE s.name LIKE %s'
     args=['%'+name+'%']
     conn.execute(sql,args)
     query_results = conn.execute(sql,args).fetchall()
     search_res = []
     for result in query_results:
+        urn = 'spotify:track:{}'.format(result[0].strip())
+        song = sp.track(urn)
         item = {
+            "img": song['album']['images'][1]['url'],
             "song_id": result[0],
             "song_name": result[1],
             "release_date": result[2],
-            "album_id": result[3]
+            "album_name": result[3]
         }
         search_res.append(item)
     return search_res

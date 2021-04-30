@@ -199,22 +199,22 @@ def homepage():
 Routing to different tables 
 
 """
-@app.route("/album", methods=['POST'])
+@app.route("/album", methods=['GET', 'POST'])
 def album():
     items = db_helper.fetch_albums()
     return render_template("album.html", items=items)
 
-@app.route("/artist", methods=['POST'])
+@app.route("/artist", methods=['GET', 'POST'])
 def artist():
     items = db_helper.fetch_artists()
     return render_template("artist.html", items=items)
 
-@app.route("/song", methods=['POST'])
+@app.route("/song", methods=['GET', 'POST'])
 def song():
     items = db_helper.fetch_songs()
     return render_template("song.html", items=items)
 
-@app.route("/genre", methods=['POST'])
+@app.route("/genre", methods=['GET', 'POST'])
 def genre():
     items = db_helper.fetch_genres()
     return render_template("genre.html", items=items)

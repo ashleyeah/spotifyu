@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Artists CRUD Demo</title>
+        <title>Artist Results</title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,34 +16,41 @@
 
     </head>
 
+    <style>
+        html, body, main {
+            min-width: 1000px !important;
+            overflow-x: hidden !important;
+        }
+    </style>
+
     <body>
 
-    <main role="main" class="container extra-bottom" style="width: 1500px">
+    <main role="main" class="container extra-bottom">
       <h1 class="mt-5" style="color: green;">SpotifyU</h1>
       <p><mark style="background-color: green; color: white; border-radius: 3px;">Artist Page</mark></p>
     </main>
 
     <!--Todo Table-->
-    <div class="container table-responsive" style="width:1500px">      
+    <div class="container table-responsive" style="min-width: 1000px !important;">      
     <table class="table">
         <h3>Search Results: </h3> 
         <thead>
         <tr>
-            <th class="task-id">Artist Name</th>
-            <th class="task">Artist ID</th>
+            <th class="task-id"></th>
+            <th class="task">Artist Name</th>
         </tr>
         </thead>
 
         <tbody>
         {% for item in items %}
             <tr>
+                <td><img src={{item.img}} height=100 width=100></img></td>
                 <td>{{item.name}}</td>
-                <td>{{item.artist_id}}</td>
         {% endfor %}
         
         </tbody>
     </table>
-    <form style="text-align: right;" action="/">
+    <form style="text-align: right;" action="/artist">
         <button type="submit" class="btn btn-secondary">Back</button>
     </form>
     </div>
