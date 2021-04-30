@@ -28,65 +28,65 @@ def session_cache_path():
 
 @app.route('/')
 def index():
-    if not session.get('uuid'):
-        # Step 1. Visitor is unknown, give random ID
-        session['uuid'] = str(uuid.uuid4())
+    # if not session.get('uuid'):
+    #     # Step 1. Visitor is unknown, give random ID
+    #     session['uuid'] = str(uuid.uuid4())
 
-    cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
-    auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-library-read user-read-recently-played user-top-read',
-                                                cache_handler=cache_handler, 
-                                                show_dialog=True)
+    # cache_handler = spotipy.cache_handler.CacheFileHandler(cache_path=session_cache_path())
+    # auth_manager = spotipy.oauth2.SpotifyOAuth(scope='user-library-read user-read-recently-played user-top-read',
+    #                                             cache_handler=cache_handler, 
+    #                                             show_dialog=True)
 
-    if request.args.get("code"):
-        # Step 3. Being redirected from Spotify auth page
-        auth_manager.get_access_token(request.args.get("code"))
-        return redirect('/')
+    # if request.args.get("code"):
+    #     # Step 3. Being redirected from Spotify auth page
+    #     auth_manager.get_access_token(request.args.get("code"))
+    #     return redirect('/')
 
-    if not auth_manager.validate_token(cache_handler.get_cached_token()):
-        # Step 2. Display sign in link when no token
-        auth_url = auth_manager.get_authorize_url()
-        return render_template("sign_in.html", url=auth_url)
+    # if not auth_manager.validate_token(cache_handler.get_cached_token()):
+    #     # Step 2. Display sign in link when no token
+    #     auth_url = auth_manager.get_authorize_url()
+    #     return render_template("sign_in.html", url=auth_url)
 
-        # return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+    #     # return f'<h2><a href="{auth_url}">Sign in</a></h2>'
 
 
-    # Step 4. Signed in, display data
-    sp = spotipy.Spotify(auth_manager=auth_manager)
-    items = []
-    while True:
-        curGroup = sp.current_user_top_tracks(limit=25, offset=0, time_range='medium_term')['items']
-        for res in curGroup:
-            artist = res['artists'][0]['name']
-            for i in range(1, len(res['artists'])):
-                artist += ", " + res['artists'][i]['name']
-            item = {
-                "img": res['album']['images'][1]['url'],
-                "song_name": res['name'],
-                "artist_name": artist,
-                "album_name": res['album']['name']
-            }
-            items.append(item)
-        break
-    artists = []
-    while True:
-        curGroup2 = sp.current_user_top_artists(limit=25, offset=0, time_range='medium_term')['items']
-        for res in curGroup2:
-            genres = res['genres'][0]
-            for i in range(1, len(res['genres'])):
-                genres += ", " + res['genres'][i]
-            image = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-            if len(res['images']) > 0:
-                image = res['images'][1]['url']
-            item = {
-                "img": image,
-                "name": res['name'],
-                "genres": genres,
-            }
-            artists.append(item)
-        break
+    # # Step 4. Signed in, display data
+    # sp = spotipy.Spotify(auth_manager=auth_manager)
+    # items = []
+    # while True:
+    #     curGroup = sp.current_user_top_tracks(limit=25, offset=0, time_range='medium_term')['items']
+    #     for res in curGroup:
+    #         artist = res['artists'][0]['name']
+    #         for i in range(1, len(res['artists'])):
+    #             artist += ", " + res['artists'][i]['name']
+    #         item = {
+    #             "img": res['album']['images'][1]['url'],
+    #             "song_name": res['name'],
+    #             "artist_name": artist,
+    #             "album_name": res['album']['name']
+    #         }
+    #         items.append(item)
+    #     break
+    # artists = []
+    # while True:
+    #     curGroup2 = sp.current_user_top_artists(limit=25, offset=0, time_range='medium_term')['items']
+    #     for res in curGroup2:
+    #         genres = res['genres'][0]
+    #         for i in range(1, len(res['genres'])):
+    #             genres += ", " + res['genres'][i]
+    #         image = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+    #         if len(res['images']) > 0:
+    #             image = res['images'][1]['url']
+    #         item = {
+    #             "img": image,
+    #             "name": res['name'],
+    #             "genres": genres,
+    #         }
+    #         artists.append(item)
+    #     break
     # items = db_helper.user_top_tracks(session.get('token_info').get('access_token'))
     # artists = db_helper.user_top_artists(session.get('token_info').get('access_token'))
-    return render_template("index.html", items=items, artists=artists)
+    return render_template("index.html")
 
 
 @app.route('/sign_out')
@@ -349,14 +349,14 @@ def search_by_name():
 
 # special functions 
 
-# @app.route("/genre/search/<string:genre_name>", methods=['GET', 'POST'])
-# def genre_artists(genre_name):
-#     """ recieved post requests for entry updates """
-#     print('here?')
-#     data = request.get_json()
-#     res, genre = db_helper.display_artists_by_genre(genre_name)
+@app.route("/genre/search/<string:genre_name>", methods=['GET', 'POST'])
+def genre_artists(genre_name):
+    """ recieved post requests for entry updates """
+    print('here?')
+    data = request.get_json()
+    res, genre = db_helper.display_artists_by_genre(genre_name)
 
-#     return render_template('genre_artists.html', items = res, genre = genre.upper())
+    return render_template('genre_artists.html', items = res, genre = genre.upper())
 
 
 # @app.route('/login')

@@ -413,7 +413,7 @@ def genre_advanced_query():
 
 def search_by_genre_name(name: str):
     conn = db.connect()
-    query = "SELECT genre_name, group_concat(artist_name) FROM main.Artist_to_Genre NATURAL JOIN (SELECT genre_id FROM main.Genres WHERE name LIKE '%%{}%%') AS t GROUP BY genre_name;".format(name)
+    query = "SELECT genre_name, group_concat(artist_name SEPARATOR ', ') FROM main.Artist_to_Genre NATURAL JOIN (SELECT genre_id FROM main.Genres WHERE name LIKE '%%{}%%') AS t GROUP BY genre_name;".format(name)
     res = conn.execute(query).fetchall()
     result = []
     for r in res:
