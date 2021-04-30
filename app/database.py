@@ -428,20 +428,30 @@ def search_by_genre_name(name: str):
 
 def display_artists_by_genre(name: str):
     conn = db.connect()
-    
-    query = "SELECT * FROM Artist_to_Genre WHERE genre_name = '%%{}%%'".format(name)
+    query = "SELECT * FROM Artist_to_Genre WHERE genre_name = '{genre_name}'".format(genre_name = name)
     res = conn.execute(query).fetchall()
     print(res)
 
     result = []
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+
+
     for r in res:
+        urn = 'spotify:artist:{}'.format(r[0].strip())
+        artist = sp.artist(urn)
+        img = ''
+        if len(artist['images']) > 0:
+            img = artist['images'][1]['url']
+        else:
+            img = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
         item = {
-            "name": r[0],
-            "artists": r[1]
+            "img": img,
+            "name": r[1],
+            "genre": r[3]
         }
         result.append(item)
-    conn.close()
-    return result
+    return result, res[0][3]
 
 
 

@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Genre Results</title>
+        <title>Search Results </title>
 
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,34 +20,32 @@
     <body>
 
     <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">SpotifyU</h1>
+      <h1 class="mt-5" >SpotifyU</h1>
       <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Genre Page</mark></p>
     </main>
 
     <!--Todo Table-->
     <div class="container table-responsive" style="min-width: 1000px !important;">      
     <table class="table">
-        <h3>Search Results: </h3> 
+        <h3>ARTISTS IN {{genre}}: </h3> 
         <thead>
         <tr>
-            <th class="song_name">Genre Name</th>
-            <th class="artist">Artists</th>
+            <th class="task-id"></th>
+            <th class="task">Artist Name</th>
         </tr>
-        </thead>`
+        </thead>
 
         <tbody>
         {% for item in items %}
             <tr>
-                <td><a href="search/{{item.name}}">{{item.name}}</a></td>
-                <!-- <td>{{item.name}}</td>                 -->
-                <td>{{item.artists}}</td>
-            </tr>
+                <td><img src={{item.img}} height=100 width=100></img></td>
+                <td>{{item.name}}</td>
         {% endfor %}
         
         </tbody>
     </table>
     <form style="text-align: right;" action="/genre">
-        <button type="submit" class="btn btn-secondary">Back</button>
+        <button type="submit" class="btn btn-secondary">Back To Genre Page</button>
     </form>
     </div>
 

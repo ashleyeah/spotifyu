@@ -393,23 +393,14 @@ def search_by_name():
 
 # special functions 
 
-@app.route("/genre/search/artists", methods=['POST'])
+@app.route("/genre/search/<string:genre_name>", methods=['GET', 'POST'])
 def genre_artists(genre_name):
     """ recieved post requests for entry updates """
     print('here?')
     data = request.get_json()
-    print(data)
-    print('here')
-    try:
-        if "name" in data:
-            db_helper.display_artists_by_genre(genre_name, data["name"])
-            result = {'success': True, 'response': 'Task Updated'}
-        else:
-            result = {'success': True, 'response': 'Nothing Updated'}
-    except:
-        result = {'success': False, 'response': 'Something went wrong'}
+    res, genre = db_helper.display_artists_by_genre(genre_name)
 
-    return jsonify(result)
+    return render_template('genre_artists.html', items = res, genre = genre.upper())
 
 
 @app.route('/login')

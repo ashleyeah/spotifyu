@@ -271,7 +271,7 @@ $(document).ready(function () {
         const link = $(this)
         $.ajax({
             type: 'POST',
-            url: '/genre/delete/' + link.data('source'),
+            url: '/genre/search/' + link.data('source'),
             success: function (res) {
                 console.log(res.response)
                 location.reload();
