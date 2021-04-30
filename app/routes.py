@@ -177,22 +177,16 @@ def create():
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
-
-
-
-
-
 @app.route("/")
 def homepage():
     """ returns rendered homepage """
     session['token_info'], authorized = get_token()
     session.modified = True
-    print(authorized)
     if not authorized:
         return redirect('/login')
-    else:
-        return render_template("index.html")
-
+    items = db_helper.user_top_tracks(session.get('token_info').get('access_token'))
+    artists = db_helper.user_top_artists(session.get('token_info').get('access_token'))
+    return render_template("index.html", items=items, artists=artists)
 
 """
 
@@ -339,4 +333,4 @@ def create_spotify_oauth():
             client_id="f3dc4f3802254be091c8d8576961bc9d",
             client_secret="b51d135ad7104add8f71933197e9cc14",
             redirect_uri=url_for('authorize', _external=True),
-            scope="user-library-read")
+            scope="user-library-read user-read-recently-played user-top-read")

@@ -412,3 +412,44 @@ def search_by_genre_name(name: str):
         result.append(item)
     conn.close()
     return result
+
+
+def user_top_tracks(access_token: str) -> dict:
+    sp = spotipy.Spotify(auth=access_token)
+    items = []
+    while True:
+        curGroup = sp.current_user_top_tracks(limit=25, offset=0, time_range='medium_term')['items']
+        for res in curGroup:
+            artist = res['artists'][0]['name']
+            for i in range(1, len(res['artists'])):
+                artist += ", " + res['artists'][i]['name']
+            item = {
+                "img": res['album']['images'][1]['url'],
+                "song_name": res['name'],
+                "artist_name": artist,
+                "album_name": res['album']['name']
+            }
+            items.append(item)
+        break
+    return items
+
+def user_top_artists(access_token: str) -> dict:
+    sp = spotipy.Spotify(auth=access_token)
+    items = []
+    while True:
+        curGroup = sp.current_user_top_artists(limit=25, offset=0, time_range='medium_term')['items']
+        for res in curGroup:
+            genres = res['genres'][0]
+            for i in range(1, len(res['genres'])):
+                genres += ", " + res['genres'][i]
+            image = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
+            if len(res['images']) > 0:
+                image = res['images'][1]['url']
+            item = {
+                "img": image,
+                "name": res['name'],
+                "genres": genres,
+            }
+            items.append(item)
+        break
+    return items

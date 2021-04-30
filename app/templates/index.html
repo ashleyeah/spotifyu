@@ -16,51 +16,79 @@
 
     </head>
 
-    <style>
-        html, body, main {
-            min-width: 1000px !important;
-            overflow-x: hidden !important;
-        }
-    </style>
+    
 
     <body>
 
-    <main role="main" class="container extra-bottom">
-      <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Home Page</mark></p>
+    <main role="main" class="container extra-bottom" style="text-align: left;">
+      <h1 class="mt-5"> SpotifyU</h1>
+      <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Home Page</mark></p>
+      
     </main>
-    
+    <div class = "form-group">
+        <form action="/album" method="POST"  style="width:22%">
+            <button type="submit">Albums</button>
+        </form>
+        <form action="/artist" method="POST" style="width:22%" >
+            <button type="submit">Artists</button>
+        </form>
+        <form action="/song" method="POST"  style="width:22%">
+            <button type="submit" >Songs</button>
+        </form>
+        <form action="/genre" method="POST" style="width:22%">
+            <button type="submit">Genres</button>
+        </form>
+    </div>
 
     <div class="container" style="min-width: 1000px !important;">    
         
         <!-- Button trigger modal -->
-        <div>
-            
-        </div>
-
-        <div style="text-align: center;">
-            <!-- <form action="/album" method="POST" style="padding-bottom: 5px">
-                <button type="submit" class="btn btn-success btn-sm">Advanced Query</button>
-            </form> -->
-            <form action="/album" method="POST" style="padding-bottom:5px">
-                <button type="submit" class="btn btn-outline-success btn-sm">Albums</button>
-            </form>
-            <form action="/artist" method="POST" style="padding-bottom:5px">
-                <button type="submit" class="btn btn-outline-success btn-sm">Artists</button>
-            </form>
-            <form action="/song" method="POST" style="padding-bottom:5px">
-                <button type="submit" class="btn btn-outline-success btn-sm">Songs</button>
-            </form>
-            <form action="/genre" method="POST" style="padding-bottom:5px">
-                <button type="submit" class="btn btn-outline-success btn-sm">Genres</button>
-            </form>
-            <form action="/user-info" method="POST" style="padding-bottom:5px">
-                <button type="submit" class="btn btn-outline-success btn-sm">User Information</button>
-            </form>
-            
-        </div>
+        <div class="container table-responsive" style="min-width: 1000px !important;">
+            <table class="table">
+                <h4>Top Artists (Recent): </h4> 
+                <thead>
+                <tr>
+                    <th class="song_id"></th>
+                    <th class="song_name">Name</th>
+                    <th class="release">Genres</th>
+                </tr>
+                </thead>
         
+                <tbody>
+                {% for artist in artists %}
+                    <tr>
+                        <td><img src={{artist.img}} height=75 width=75></img></td>
+                        <td>{{artist.name}}</td>
+                        <td>{{artist.genres}}</td>
+                    </tr>
+                {% endfor %}
+                
+                </tbody>
+            </table>
+            <table class="table">
+                <h4>Top Tracks (Recent): </h4> 
+                <thead>
+                <tr>
+                    <th class="song_id"></th>
+                    <th class="song_name">Track</th>
+                    <th class="release">Artists</th>
+                    <th class="album_id">Album</th>
+                </tr>
+                </thead>
         
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td><img src={{item.img}} height=75 width=75></img></td>
+                        <td>{{item.song_name}}</td>
+                        <td>{{item.artist_name}}</td>
+                        <td>{{item.album_name}}</td>
+                    </tr>
+                {% endfor %}
+                
+                </tbody>
+            </table>
+        </div>
 
     <footer class="footer">
       <div class="container">
