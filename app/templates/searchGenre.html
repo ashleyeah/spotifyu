@@ -16,18 +16,12 @@
 
     </head>
 
-    <style>
-        html, body, main {
-            min-width: 1000px !important;
-            overflow-x: hidden !important;
-        }
-    </style>
 
     <body>
 
     <main role="main" class="container extra-bottom">
-      <h1 class="mt-5" style="color: green;">SpotifyU</h1>
-      <p><mark style="background-color: green; color: white; border-radius: 3px;">Song Page</mark></p>
+      <h1 class="mt-5">SpotifyU</h1>
+      <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Genre Page</mark></p>
     </main>
 
     <!--Todo Table-->
@@ -37,13 +31,15 @@
         <thead>
         <tr>
             <th class="song_name">Genre Name</th>
+            <th class="artist">Artists</th>
         </tr>
         </thead>
 
         <tbody>
         {% for item in items %}
             <tr>
-                <td>{{item.name}}</td>
+                <td><a href="/genre/search/artists">{{item.name}}</a></td>
+                <td>{{item.artists}}</td>
             </tr>
         {% endfor %}
         

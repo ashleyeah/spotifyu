@@ -20,30 +20,32 @@
 
     <body>
 
-    <main role="main" class="container extra-bottom" style="text-align: left;">
+    <main role="main" class="container extra-bottom">
       <h1 class="mt-5"> SpotifyU</h1>
       <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Home Page</mark></p>
-      
+
     </main>
-    <div class = "form-group">
-        <form action="/album" method="POST"  style="width:22%">
-            <button type="submit">Albums</button>
-        </form>
-        <form action="/artist" method="POST" style="width:22%" >
-            <button type="submit">Artists</button>
-        </form>
-        <form action="/song" method="POST"  style="width:22%">
-            <button type="submit" >Songs</button>
-        </form>
-        <form action="/genre" method="POST" style="width:22%">
-            <button type="submit">Genres</button>
-        </form>
-    </div>
+
+    
 
     <div class="container" style="min-width: 1000px !important;">    
         
         <!-- Button trigger modal -->
-        <div class="container table-responsive" style="min-width: 1000px !important;">
+        <div class="container table-responsive" style="min-width: 1000px !important; text-align: left;">
+            <div class = "form-group" style="width: 100%; text-align: left; margin-bottom: 10px; display: flex; justify-content: center;">
+                <form action="/album" method="POST">
+                    <button type="submit">Albums</button>
+                </form>
+                <form action="/artist" method="POST" >
+                    <button type="submit">Artists</button>
+                </form>
+                <form action="/song" method="POST" >
+                    <button type="submit" >Songs</button>
+                </form>
+                <form action="/genre" method="POST" >
+                    <button type="submit">Genres</button>
+                </form>
+            </div>
             <table class="table">
                 <h4>Top Artists (Recent): </h4> 
                 <thead>

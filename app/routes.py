@@ -45,7 +45,10 @@ def index():
     if not auth_manager.validate_token(cache_handler.get_cached_token()):
         # Step 2. Display sign in link when no token
         auth_url = auth_manager.get_authorize_url()
-        return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+        return render_template("sign_in.html", url=auth_url)
+
+        # return f'<h2><a href="{auth_url}">Sign in</a></h2>'
+
 
     # Step 4. Signed in, display data
     sp = spotipy.Spotify(auth_manager=auth_manager)
@@ -382,10 +385,32 @@ def search_song():
 
 @app.route("/genre/search", methods=['POST'])
 def search_by_name():
+    print('search')
     res = db_helper.search_by_genre_name(request.form['search_name'])
     return render_template('searchGenre.html', items = res)
 
     
+
+# special functions 
+
+@app.route("/genre/search/artists", methods=['POST'])
+def genre_artists(genre_name):
+    """ recieved post requests for entry updates """
+    print('here?')
+    data = request.get_json()
+    print(data)
+    print('here')
+    try:
+        if "name" in data:
+            db_helper.display_artists_by_genre(genre_name, data["name"])
+            result = {'success': True, 'response': 'Task Updated'}
+        else:
+            result = {'success': True, 'response': 'Nothing Updated'}
+    except:
+        result = {'success': False, 'response': 'Something went wrong'}
+
+    return jsonify(result)
+
 
 @app.route('/login')
 def login():

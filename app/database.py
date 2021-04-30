@@ -318,7 +318,7 @@ def fetch_genres() -> dict:
     """
 
     conn = db.connect()
-    query_results = conn.execute("Select * from Genres ORDER BY genre_id;").fetchall()
+    query_results = conn.execute("Select * from Genres ORDER BY genre_id LIMIT 50;").fetchall()
     conn.close()
     todo_list = []
     for result in query_results:
@@ -401,17 +401,43 @@ def genre_advanced_query():
 
 def search_by_genre_name(name: str):
     conn = db.connect()
-    query = "SELECT * FROM Genres WHERE name LIKE '%%{}%%' ORDER BY genre_id;".format(name)
+    query = "SELECT genre_name, group_concat(artist_name) FROM main.Artist_to_Genre NATURAL JOIN (SELECT genre_id FROM main.Genres WHERE name LIKE '%%{}%%') AS t GROUP BY genre_name;".format(name)
     res = conn.execute(query).fetchall()
     result = []
     for r in res:
         item = {
-            "id": r[0],
-            "name": r[1]
+            "name": r[0],
+            "artists": r[1]
         }
         result.append(item)
     conn.close()
     return result
+
+
+def display_artists_by_genre(name: str):
+    conn = db.connect()
+    
+    query = "SELECT * FROM Artist_to_Genre WHERE genre_name = '%%{}%%'".format(name)
+    res = conn.execute(query).fetchall()
+    print(res)
+
+    result = []
+    for r in res:
+        item = {
+            "name": r[0],
+            "artists": r[1]
+        }
+        result.append(item)
+    conn.close()
+    return result
+
+
+
+
+
+""" --------------------------------------------------"""
+""" -----------------USER CUSTOM FUNCTION-------------------"""
+"""---------------------------------------------------"""
 
 def user_top_tracks(access_token: str) -> dict:
     sp = spotipy.Spotify(auth=access_token)

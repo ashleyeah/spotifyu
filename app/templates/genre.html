@@ -16,20 +16,14 @@
 
     </head>
 
-    <style>
-        html, body, main {
-            min-width: 1000px !important;
-            overflow-x: hidden !important;
-        }
-    </style>
 
     <body>
 
     <main role="main" class="container extra-bottom">
         <form action="/" method="POST">
-            <h1 type="submit" class="mt-5" style="color: green;">SpotifyU</h1>
+            <h1 type="submit" class="mt-5">SpotifyU</h1>
         </form>
-        <p><mark style="background-color: green; color: white; border-radius: 3px;">Genre Page</mark></p>
+        <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Genre Page</mark></p>
     </main>
     
 
@@ -41,6 +35,7 @@
                 <div class="form-group" style="padding-bottom:20px">
                     <label for="search_name">Search Genre</label>
                     <div class="input-group">
+                        <!-- <img class="search-icon" src="data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMC4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDU2Ljk2NiA1Ni45NjYiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDU2Ljk2NiA1Ni45NjY7IiB4bWw6c3BhY2U9InByZXNlcnZlIiB3aWR0aD0iMTZweCIgaGVpZ2h0PSIxNnB4Ij4KPHBhdGggZD0iTTU1LjE0Niw1MS44ODdMNDEuNTg4LDM3Ljc4NmMzLjQ4Ni00LjE0NCw1LjM5Ni05LjM1OCw1LjM5Ni0xNC43ODZjMC0xMi42ODItMTAuMzE4LTIzLTIzLTIzcy0yMywxMC4zMTgtMjMsMjMgIHMxMC4zMTgsMjMsMjMsMjNjNC43NjEsMCw5LjI5OC0xLjQzNiwxMy4xNzctNC4xNjJsMTMuNjYxLDE0LjIwOGMwLjU3MSwwLjU5MywxLjMzOSwwLjkyLDIuMTYyLDAuOTIgIGMwLjc3OSwwLDEuNTE4LTAuMjk3LDIuMDc5LTAuODM3QzU2LjI1NSw1NC45ODIsNTYuMjkzLDUzLjA4LDU1LjE0Niw1MS44ODd6IE0yMy45ODQsNmM5LjM3NCwwLDE3LDcuNjI2LDE3LDE3cy03LjYyNiwxNy0xNywxNyAgcy0xNy03LjYyNi0xNy0xN1MxNC42MSw2LDIzLjk4NCw2eiIgZmlsbD0iIzAwMDAwMCIvPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8Zz4KPC9nPgo8L3N2Zz4K" /> -->
                         <input type="text" id="search_name" name="search_name" placeholder="Genre" class="form-control width100">
                         <span class="input-group-btn">
                             <button type="submit" class="btn btn-success">Search</button>
@@ -51,7 +46,7 @@
         </div>
         <div style="text-align: right;">
             <form action="/popular" method="POST">
-                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Genre" style="background-color: whitesmoke; color: seagreen;">Add Genre</button>
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="New Genre">Add Genre</button>
             </form>
         </div> 
 

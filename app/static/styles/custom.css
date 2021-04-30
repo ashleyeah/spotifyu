@@ -3,10 +3,10 @@
 /* ref: https://getbootstrap.com/docs/4.0/examples/sticky-footer/ */
 h1{
     text-align: left;
-    color:#1DB954;
-
-    left: 10000px;
-    top: 1500px;
+    color:hsl(141, 73%, 42%);
+    size: 50%;
+	font-family: 'proxima-nova', sans-serif;
+    font-weight: bold;
 }
 
 html {
@@ -21,7 +21,6 @@ html {
 body {
     /* Margin bottom by footer height */
     margin-bottom: 2em;
-    /* background-image: linear-gradient(to bottom right,#39393d, black); */
     color: white;
     background-color: #19191b;
     text-align: left;
@@ -47,18 +46,16 @@ main{
 /* .form-group {
     width: 100%;
 } */
-.form-group {
-    display: inline-block;
-}
+
 .form-group button {
     background-color: #1DB954; /* Green background */
     border: 1px solid green; /* Green border */
     color: white; /* White text */
     padding: 10px 24px; /* Some padding */
     cursor: pointer; /* Pointer/hand icon */
-
-    /* float: left; */
-    min-width: 100%;
+    border-radius: 1px;
+    float: left;
+    /* min-width: 100%; */
   }
 
 .form-group button:hover {
@@ -112,13 +109,15 @@ hr {
     vertical-align: middle;
     background-color: #19191b;
     color: white;
+    font-family: 'proxima-nova', sans-serif;
 }
 
 .table tr {
     text-align: center;
     vertical-align: middle;
     background-color: #19191b;
-    color: white
+    color: white;
+    font-family: 'proxima-nova', sans-serif;
 }
 
 /* bootstrap modifications */

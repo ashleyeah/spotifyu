@@ -266,4 +266,19 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('.a').click(function () {
+        const link = $(this)
+        $.ajax({
+            type: 'POST',
+            url: '/genre/delete/' + link.data('source'),
+            success: function (res) {
+                console.log(res.response)
+                location.reload();
+            },
+            error: function () {
+                console.log('Error');
+            }
+        });
+    });
 });
