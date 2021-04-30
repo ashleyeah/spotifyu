@@ -12,7 +12,7 @@ import uuid
 
 os.environ['SPOTIPY_CLIENT_ID']='f3dc4f3802254be091c8d8576961bc9d'
 os.environ['SPOTIPY_CLIENT_SECRET']='b51d135ad7104add8f71933197e9cc14'
-os.environ['SPOTIPY_REDIRECT_URI']='http://127.0.0.1:5000/'
+os.environ['SPOTIPY_REDIRECT_URI']='https://spotifyu.uc.r.appspot.com/'
 
 app.config['SECRET_KEY'] = os.urandom(64)
 app.config['SESSION_TYPE'] = 'filesystem'
@@ -279,50 +279,6 @@ def create():
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 
-# @app.route("/")
-# def homepage():
-#     """ returns rendered homepage """
-#     session['token_info'], authorized = get_token()
-#     session.modified = True
-#     if not authorized:
-#         return redirect('/login')
-#     sp = spotipy.Spotify(session.get('token_info').get('access_token'))
-#     items = []
-#     while True:
-#         curGroup = sp.current_user_top_tracks(limit=25, offset=0, time_range='medium_term')['items']
-#         for res in curGroup:
-#             artist = res['artists'][0]['name']
-#             for i in range(1, len(res['artists'])):
-#                 artist += ", " + res['artists'][i]['name']
-#             item = {
-#                 "img": res['album']['images'][1]['url'],
-#                 "song_name": res['name'],
-#                 "artist_name": artist,
-#                 "album_name": res['album']['name']
-#             }
-#             items.append(item)
-#         break
-#     artists = []
-#     while True:
-#         curGroup2 = sp.current_user_top_artists(limit=25, offset=0, time_range='medium_term')['items']
-#         for res in curGroup2:
-#             genres = res['genres'][0]
-#             for i in range(1, len(res['genres'])):
-#                 genres += ", " + res['genres'][i]
-#             image = "https://t4.ftcdn.net/jpg/00/64/67/63/360_F_64676383_LdbmhiNM6Ypzb3FM4PPuFP9rHe7ri8Ju.jpg"
-#             if len(res['images']) > 0:
-#                 image = res['images'][1]['url']
-#             item = {
-#                 "img": image,
-#                 "name": res['name'],
-#                 "genres": genres,
-#             }
-#             artists.append(item)
-#         break
-#     # items = db_helper.user_top_tracks(session.get('token_info').get('access_token'))
-#     # artists = db_helper.user_top_artists(session.get('token_info').get('access_token'))
-#     return render_template("index.html", items=items, artists=artists)
-
 """
 
 Routing to different tables 
@@ -403,51 +359,51 @@ def genre_artists(genre_name):
     return render_template('genre_artists.html', items = res, genre = genre.upper())
 
 
-@app.route('/login')
-def login():
-    sp_oauth = create_spotify_oauth()
-    auth_url = sp_oauth.get_authorize_url()
-    print(auth_url)
-    return redirect(auth_url)
+# @app.route('/login')
+# def login():
+#     sp_oauth = create_spotify_oauth()
+#     auth_url = sp_oauth.get_authorize_url()
+#     print(auth_url)
+#     return redirect(auth_url)
 
-@app.route('/authorize')
-def authorize():
-    sp_oauth = create_spotify_oauth()
-    session.clear()
-    code = request.args.get('code')
-    token_info = sp_oauth.get_access_token(code)
-    session["token_info"] = token_info
-    return redirect("/")
+# @app.route('/authorize')
+# def authorize():
+#     sp_oauth = create_spotify_oauth()
+#     session.clear()
+#     code = request.args.get('code')
+#     token_info = sp_oauth.get_access_token(code)
+#     session["token_info"] = token_info
+#     return redirect("/")
 
-@app.route('/logout')
-def logout():
-    for key in list(session.keys()):
-        session.pop(key)
-    return redirect('/')
+# @app.route('/logout')
+# def logout():
+#     for key in list(session.keys()):
+#         session.pop(key)
+#     return redirect('/')
 
-@app.route('/getTracks')
-def get_all_tracks():
-    session['token_info'], authorized = get_token()
-    session.modified = True
-    if not authorized:
-        return redirect('/login')
-    sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
-    results = []
-    iter = 0
-    while True:
-        offset = iter * 50
-        iter += 1
-        curGroup = sp.current_user_saved_tracks(limit=50, offset=offset)['items']
-        for idx, item in enumerate(curGroup):
-            track = item['track']
-            val = track['name'] + "," + track['id'] + "," + track['artists'][0]['name'] + "," + track['artists'][0]['id'] 
-            results += [val]
-        if (len(curGroup) < 50):
-            break
+# @app.route('/getTracks')
+# def get_all_tracks():
+#     session['token_info'], authorized = get_token()
+#     session.modified = True
+#     if not authorized:
+#         return redirect('/login')
+#     sp = spotipy.Spotify(auth=session.get('token_info').get('access_token'))
+#     results = []
+#     iter = 0
+#     while True:
+#         offset = iter * 50
+#         iter += 1
+#         curGroup = sp.current_user_saved_tracks(limit=50, offset=offset)['items']
+#         for idx, item in enumerate(curGroup):
+#             track = item['track']
+#             val = track['name'] + "," + track['id'] + "," + track['artists'][0]['name'] + "," + track['artists'][0]['id'] 
+#             results += [val]
+#         if (len(curGroup) < 50):
+#             break
     
-    df = pd.DataFrame(results, columns=["song names"]) 
-    df.to_csv('songs.csv', index=False)
-    return redirect('/')
+#     df = pd.DataFrame(results, columns=["song names"]) 
+#     df.to_csv('songs.csv', index=False)
+#     return redirect('/')
 
 
 # Checks to see if token is valid and gets a new token if not

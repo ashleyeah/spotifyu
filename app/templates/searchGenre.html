@@ -20,7 +20,7 @@
     <body>
 
     <main role="main" class="container extra-bottom">
-      <h1 class="mt-5">SpotifyU</h1>
+      <h1 class="mt-5"><a href="../">SpotifyU</a></h1>
       <p><mark style="background-color: #1DB954; color: white; border-radius: 3px;">Genre Page</mark></p>
     </main>
 
@@ -38,7 +38,7 @@
         <tbody>
         {% for item in items %}
             <tr>
-                <td><a href="search/{{item.name}}">{{item.name}}</a></td>
+                <td><a href="search/{{item.name}}" style="color: white;">{{item.name}}</a></td>
                 <!-- <td>{{item.name}}</td>                 -->
                 <td>{{item.artists}}</td>
             </tr>
@@ -46,7 +46,7 @@
         
         </tbody>
     </table>
-    <form style="text-align: right;" action="/genre">
+    <form style="text-align: right;" action="/genres">
         <button type="submit" class="btn btn-secondary">Back</button>
     </form>
     </div>
