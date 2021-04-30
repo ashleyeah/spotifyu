@@ -143,7 +143,7 @@ $(document).ready(function () {
         const button = $(event.relatedTarget) // Button that triggered the modal
         const taskID = button.data('source') // source = song_id
         const content = button.data('content') // content = song_name
-        const albumContent = button.data('album') // album = album_id
+        /* const albumContent = button.data('album') // album = album_id */
         const modal = $(this)
         console.log("outside if statement")
         if (taskID === 'New Song') {
@@ -159,7 +159,7 @@ $(document).ready(function () {
         if (content) {
             modal.find('#song_name').val(content);
             modal.find('#song_id').val(taskID);
-            modal.find('#album_id').val(albumContent);
+            //modal.find('#album_id').val(albumContent);
         } else {
             modal.find('.form-control').val('');
         }
@@ -177,7 +177,7 @@ $(document).ready(function () {
             data: JSON.stringify({
                 'song_name': $('#song_name').val(),
                 'song_id': $('#song_id').val(), //puts the song name into data['description']
-                'album_id': $('#album_id').val()
+                //'album_id': $('#album_id').val()
             }),
             success: function (res) {
                 console.log(res.response)

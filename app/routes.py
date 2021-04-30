@@ -267,7 +267,7 @@ def create_song():
     print("We are in create song.")
     data = request.get_json()
     
-    db_helper.insert_new_song(data['song_id'], data['song_name'], data['album_id'])
+    db_helper.insert_new_song(data['song_id'], data['song_name'])
     result = {'success': True, 'response': 'Done'}
     return jsonify(result)
 

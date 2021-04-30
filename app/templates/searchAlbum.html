@@ -67,8 +67,8 @@
             <th class="task">Artists</th>
             <th>Songs</th>
             <th class="status">Type</th>
-            <th class="update">Edit</th>
-            <th class="update">Remove</th>
+            <!-- <th class="update">Edit</th>
+            <th class="update">Remove</th> -->
         </tr>
         </thead>
 
@@ -81,8 +81,8 @@
                 <td>{{item.songs}}</td>
                 <td>{{item.type}}</td>
                 
-                <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.album_id}}" data-content="{{item.name}}" data-date="{{item.date}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
-                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.album_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td>
+                <!-- <td><button type="button" class="btn btn-outline-info btn-sm" data-bs-toggle="modal" data-bs-target="#task-modal" data-source="{{item.album_id}}" data-content="{{item.name}}" data-date="{{item.date}}"><i class="fa fa-pen fa-1" aria-hidden="true"></i></button></td>
+                <td><button class="btn btn-outline-secondary btn-sm remove" data-source="{{item.album_id}}" type="button"><i class="fa fa-trash fa-1" aria-hidden="true"></i></button></td> -->
             </tr>
         {% endfor %}
         

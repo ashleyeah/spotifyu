@@ -256,18 +256,30 @@ def update_song_entry(task_id: str, text: str) -> None:
     conn.execute(query)
     conn.close()
 
-def insert_new_song(song_id: str, name: str, album_id: str) ->  None:
+def insert_new_song(song_id: str, name: str) ->  None:
     """Insert new task to todo table.
     Args:
         text (str): Song name. Looks up the song name from SongsOld table, and
         gets the value of the attributes.
     Returns: The task ID for the inserted entry
     """
-
+    auth_manager = SpotifyClientCredentials('f3dc4f3802254be091c8d8576961bc9d', 'b51d135ad7104add8f71933197e9cc14')
+    sp = spotipy.Spotify(auth_manager=auth_manager)
+    
     conn = db.connect()
-    today = date.today()
+    # today = date.today()
+    output = 'spotify:track:{}'.format(song_id)
+
+    track = sp.track(output)
+    
+    song_name = track['name']
+    release_date = track['album']['release_date']
+    album_id = track['album']['id']
+    
+
+
     query = 'Insert Ignore Into Songs (song_id, name, release_date, album_id) VALUES ("{}", "{}", "{}", "{}");'.format(
-        song_id, name, today, album_id)
+        song_id, song_name, release_date, album_id)
     conn.execute(query)
     conn.close()
 
@@ -279,7 +291,7 @@ def search_song(name: str) -> dict:
     sp = spotipy.Spotify(auth_manager=auth_manager)
 
     conn = db.connect()
-    sql='SELECT s.song_id, s.name, s.release_date, a.name FROM Songs s JOIN Albums a USING(album_id) WHERE s.name LIKE %s'
+    sql='SELECT s.song_id, s.name, s.release_date, s.album_id FROM Songs s LEFT OUTER JOIN Albums a USING(album_id) WHERE s.name LIKE %s'
     args=['%'+name+'%']
     conn.execute(sql,args)
     query_results = conn.execute(sql,args).fetchall()
@@ -292,7 +304,7 @@ def search_song(name: str) -> dict:
             "song_id": result[0],
             "song_name": result[1],
             "release_date": result[2],
-            "album_name": result[3]
+            "album_name": song['album']['name']
         }
         search_res.append(item)
     return search_res
