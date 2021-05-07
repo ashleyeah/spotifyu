@@ -9,4 +9,4 @@ table_creation
 .gitignore
 
 Pipfile
-Pipfile.Lock
+Pipfile.lock

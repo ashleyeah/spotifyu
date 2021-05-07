@@ -7,6 +7,7 @@ env_variables:
   MYSQL_PASSWORD: '1234' # please put in your credentials
   MYSQL_DB: 'main' # please put in your credentials
   MYSQL_HOST: '35.222.92.143' # please put in your credentials
+  CLOUD_SQL_CONNECTION_NAME: 'spotifyu:us-central1:spotifyu2'
 
 handlers:
 # Matches requests to /images/... to files in static/images/...
